@@ -60,10 +60,12 @@ export function SurahReaderScreen() {
   const reciter =
     MOCK_RECITERS.find((item) => item.id === reciterId) ?? MOCK_RECITERS[0]!;
 
-  const [activeAyah, setActiveAyah] = useState(1);
+  const [activeAyah, setActiveAyah] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isAudioPlayerVisible, setIsAudioPlayerVisible] = useState(false);
 
-  const activeBookmarked = isBookmarked(surah.id, activeAyah);
+  const activeBookmarked =
+    activeAyah != null ? isBookmarked(surah.id, activeAyah) : false;
 
   const handleTogglePlay = useCallback((ayahNumber: number) => {
     setActiveAyah((prev) => {
@@ -74,23 +76,37 @@ export function SurahReaderScreen() {
       setIsPlaying(true);
       return ayahNumber;
     });
+    setIsAudioPlayerVisible(true);
+  }, []);
+
+  const handleCloseAudio = useCallback(() => {
+    setIsPlaying(false);
+    setActiveAyah(null);
+    setIsAudioPlayerVisible(false);
   }, []);
 
   const handleNext = useCallback(() => {
-    setActiveAyah((current) => (current >= ayahs.length ? 1 : current + 1));
+    setActiveAyah((current) => {
+      const curr = current ?? 1;
+      return curr >= ayahs.length ? 1 : curr + 1;
+    });
     setIsPlaying(true);
   }, [ayahs.length]);
 
   const handlePrevious = useCallback(() => {
-    setActiveAyah((current) => (current <= 1 ? ayahs.length : current - 1));
+    setActiveAyah((current) => {
+      const curr = current ?? 1;
+      return curr <= 1 ? ayahs.length : curr - 1;
+    });
     setIsPlaying(true);
   }, [ayahs.length]);
 
   const handleHeaderBookmark = useCallback(() => {
+    const targetAyah = activeAyah ?? 1;
     toggleBookmark({
-      id: `bookmark-${surah.id}-${activeAyah}`,
+      id: `bookmark-${surah.id}-${targetAyah}`,
       surahId: surah.id,
-      ayahNumber: activeAyah,
+      ayahNumber: targetAyah,
       surahName: surah.nameTamil,
       note: '',
       addedLabel: 'இன்று',
@@ -280,13 +296,7 @@ export function SurahReaderScreen() {
         )}
       </View>
     ),
-    [
-      theme,
-      surah,
-      isPlaceholder,
-      readingMode,
-      setReadingMode,
-    ]
+    [theme, surah, isPlaceholder, readingMode, setReadingMode]
   );
 
   const renderFooter = useMemo(
@@ -395,7 +405,9 @@ export function SurahReaderScreen() {
         ListFooterComponent={renderFooter}
         contentContainerStyle={{
           padding: theme.spacing.lg,
-          paddingBottom: 136 + insets.bottom,
+          paddingBottom: isAudioPlayerVisible
+            ? 136 + insets.bottom
+            : theme.spacing.xl + insets.bottom,
         }}
         showsVerticalScrollIndicator={false}
         initialNumToRender={8}
@@ -404,17 +416,20 @@ export function SurahReaderScreen() {
         removeClippedSubviews
       />
 
-      <AudioDock
-        reciterName={reciter.name}
-        activeLabel={`${surah.nameTamil} · வசனம் ${activeAyah}`}
-        isPlaying={isPlaying}
-        progress={0.36}
-        bottomInset={insets.bottom}
-        onTogglePlay={() => setIsPlaying((current) => !current)}
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-        onOpenReciters={() => navigation.navigate('ReciterPicker')}
-      />
+      {isAudioPlayerVisible && activeAyah != null ? (
+        <AudioDock
+          reciterName={reciter.name}
+          activeLabel={`${surah.nameTamil} · வசனம் ${activeAyah}`}
+          isPlaying={isPlaying}
+          progress={0.36}
+          bottomInset={insets.bottom}
+          onTogglePlay={() => setIsPlaying((current) => !current)}
+          onNext={handleNext}
+          onPrevious={handlePrevious}
+          onOpenReciters={() => navigation.navigate('ReciterPicker')}
+          onClose={handleCloseAudio}
+        />
+      ) : null}
     </Screen>
   );
 }

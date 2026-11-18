@@ -7,6 +7,11 @@ licence. Version numbers describe internal milestones, not public releases.
 
 ## [Unreleased]
 
+### Fixed
+
+- Persist user theme preference ('system' | 'light' | 'dark') across app restarts using synchronous SQLite storage with zero flash of unstyled theme on launch.
+- Audio dock visibility and interaction: player card is now hidden by default, only appears when an ayah's audio play button is pressed, provides a clear cancel/close button, and fully resets the active playback session and screen layout on cancel.
+
 ### Added
 
 - Complete offline SQLite database (`assets/quran.db`) bundled into native assets:

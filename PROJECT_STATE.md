@@ -30,7 +30,7 @@ stored in a bundled SQLite database with instant FTS5 offline search.
 | 114-Surah canonical index | Working | Verified names, transliterations, meanings, counts |
 | Tab navigation | Working | Home / Quran / Prayer / Settings |
 | Stack navigation | Working | Reader, Qibla, Search, Bookmarks, Appearance, Reciter, About |
-| Theme switching | Working | system / light / dark, instant |
+| Theme persistence | Working | Persistent across app restarts (system / light / dark via SQLite); zero flash |
 | Light + dark palettes | Working | Token-driven |
 | Tamil/Arabic typography | Working | Bundled Noto Sans/Serif Tamil + Amiri |
 | Reader font sizing | Working | Arabic 22–46, Tamil 13–26 |
@@ -38,7 +38,7 @@ stored in a bundled SQLite database with instant FTS5 offline search.
 | Surah reader | Working | Verified authentic text, Bismillah header, accurate verse numbers |
 | Search screen | Working | Searches 114 Surahs and 6,236 Ayahs offline |
 | Bookmarks | Working (session) | In-memory; resets on restart |
-| Reader audio dock UI | Working (visual) | Controls update state; no sound engine |
+| Reader audio dock UI | Working (visual) | On-demand visibility, play trigger, cancel/close button, resets session; visual-only shell |
 | Prayer times layout | Working (visual) | Illustrative timings only |
 | Qibla compass | Working (visual) | Static needle, sample bearing |
 | Reciter selection | Working (session) | Persists only in memory |

@@ -9,6 +9,11 @@ import { useColorScheme } from 'react-native';
 
 import { INITIAL_BOOKMARKS } from '../../data/mock/bookmarks';
 import { DEFAULT_RECITER_ID } from '../../data/mock/reciters';
+import {
+  clearStoredThemePreference,
+  loadStoredThemePreference,
+  saveStoredThemePreference,
+} from '../../services/storage/preferencesStorage';
 import type { Bookmark, ReadingMode } from '../../types/content';
 import {
   createTheme,
@@ -51,8 +56,9 @@ export function PreferencesProvider({
   children: React.ReactNode;
 }) {
   const systemScheme = useColorScheme();
-  const [themePreference, setThemePreferenceState] =
-    useState<ThemePreference>('system');
+  const [themePreference, setThemePreferenceState] = useState<ThemePreference>(
+    () => loadStoredThemePreference(),
+  );
   const [arabicFontSize, setArabicFontSizeState] = useState(30);
   const [tamilFontSize, setTamilFontSizeState] = useState(17);
   const [readingMode, setReadingMode] = useState<ReadingMode>('both');
@@ -70,6 +76,7 @@ export function PreferencesProvider({
 
   const setThemePreference = useCallback((value: ThemePreference) => {
     setThemePreferenceState(value);
+    saveStoredThemePreference(value);
   }, []);
 
   const setArabicFontSize = useCallback((value: number) => {
@@ -104,6 +111,7 @@ export function PreferencesProvider({
 
   const resetPreferences = useCallback(() => {
     setThemePreferenceState('system');
+    clearStoredThemePreference();
     setArabicFontSizeState(30);
     setTamilFontSizeState(17);
     setReadingMode('both');
