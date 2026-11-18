@@ -37,6 +37,57 @@ npm run android        # open on a connected device/emulator
 - `npx expo run:android` performs a native prebuild + Gradle build. `android/` is
   generated and git-ignored; never edit it by hand.
 
+### Testing on a physical phone
+
+The dev build is compiled for **one ABI at a time** (`reactNativeArchitectures`
+in `android/gradle.properties`, default `x86_64` for the emulator). A phone is
+`arm64-v8a`, so it needs one of these routes.
+
+**Route 1 — Expo Go, no native build (fastest, best for UI work).**
+
+```bash
+npx expo start --go        # scan the QR code with Expo Go
+```
+
+Every native module this project uses (`expo-font`, `expo-status-bar`,
+`expo-system-ui`, `react-native-screens`, `react-native-safe-area-context`,
+`@expo/vector-icons`) is bundled inside Expo Go. The phone must run the
+**SDK 58** build of Expo Go, and both devices must be on the same Wi-Fi (use
+`--tunnel` if the network isolates clients). Config plugins such as
+`plugins/withBuildPerformance.js` are ignored by Expo Go, and the app runs in
+Expo Go's native runtime rather than our APK — so this route cannot verify
+native-manifest behaviour (see K-12).
+
+**Route 2 — a real dev build for the phone.**
+
+```bash
+npm run android:phone      # arm64-v8a Gradle build + install + adb reverse
+npm start                  # Metro
+```
+
+- `npm run apk:phone` only builds the APK; `npm run device:install` only
+  installs and sets up `adb reverse`; `npm run device:logcat` tails JS logs.
+- With **both** the emulator and the phone attached, target the phone
+  explicitly: `ADB_SERIAL=<serial> npm run device:install` (`adb devices`).
+- Wireless debugging (Android 11+) works: *Developer options → Wireless
+  debugging → Pair device with pairing code*, then
+  `adb pair <ip>:<port>` and `adb connect <ip>:<port>`. `adb reverse` still works
+  over that connection.
+- The Gradle `-P` flag overrides `gradle.properties` for that invocation only,
+  so nothing has to be edited. It also **overwrites**
+  `android/app/build/outputs/apk/debug/app-debug.apk` with an arm64 APK; the
+  next `npm run android` rebuilds the x86_64 one.
+- Each ABI list gets its own `.cxx` configuration, so the first arm64 build
+  recompiles the C++ modules once (~a few minutes). Later switches reuse the
+  cached configuration.
+
+Do **not** rely on the `TAMIL_QURAN_ARCHS` environment variable for
+`expo run:android`: Expo CLI skips prebuild when `android/` already exists, so
+the variable only takes effect with an explicit
+`TAMIL_QURAN_ARCHS="x86_64,arm64-v8a" npx expo prebuild --platform android`.
+That is the right move only if you want a single APK that works on both targets
+and accept the extra C++ compile on every clean build.
+
 ### Known environment quirks
 
 - `npx expo lint` fails with an ESLint version complaint in this setup. Use
@@ -142,10 +193,11 @@ source URL, checksum, licence/attribution) and a validation step.
 
 ## 7. Git
 
-- The repository has **no commits** and no remote. Do not create the initial
-  commit unless the owner asks.
+- The repository has one commit (`Initial commit: Tamil Quran UI foundation`)
+  and no remote. Do not rewrite or force-push it; add new commits unless the
+  owner explicitly asks for an amend.
 - `android/`, `ios/`, `node_modules/`, `.expo/` are ignored.
-- When commits begin, use imperative subjects that state reality, for example:
+- Use imperative subjects that state reality, for example:
   - `Add prayer monthly table layout`
   - `Fix Tamil line height in reader`
   - not `Implement prayer API` when only the UI exists.

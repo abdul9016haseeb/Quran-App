@@ -11,6 +11,10 @@ licence. Version numbers describe internal milestones, not public releases.
 
 - Initial Expo SDK 58 / React Native 0.88 / TypeScript 6 project for a
   Tamil-first Quran app.
+- Physical-device testing scripts: `npm run android:phone` (arm64-v8a Debug
+  build + install + `adb reverse`), plus `apk:phone`, `device:install` and
+  `device:logcat`. Documented in `docs/development/WORKFLOW.md` §2 together with
+  the Expo Go route for phones.
 - Design system in `src/theme/tokens.ts`: green/white/gold light palette, dark
   palette, spacing, radii, type scale, line heights and shadows.
 - Theme provider with `system` / `light` / `dark` preference and resolved theme

@@ -174,6 +174,11 @@ Two operational rules matter more than any config value:
    `node_modules/expo-modules-core/android/build` (313 MB of C++) and the next
    build recompiles it.
 
+**Physical phone:** the dev build is x86_64-only, so the phone needs either
+Expo Go (`npx expo start --go`, no build) or `npm run android:phone`, which
+builds `arm64-v8a` and installs over adb. Recipes and caveats are in
+`docs/development/WORKFLOW.md` §2.
+
 ---
 
 ## 7. Known issues
