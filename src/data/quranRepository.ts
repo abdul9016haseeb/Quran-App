@@ -24,6 +24,9 @@ export interface SearchResultAyah {
   tamil: string;
 }
 
+/** In-memory cache to guarantee 0ms O(1) instant lookup for previously opened Surahs. */
+const surahMemoryCache = new Map<number, Ayah[]>();
+
 /**
  * Hook to retrieve all Ayahs for a given Surah from the offline SQLite database.
  * Returns authentic Tanzil Uthmani text and Shaykh Omar Sharif's Tamil translation.
@@ -36,13 +39,19 @@ export function useSurahAyahs(surahId: number): {
   const db = useSQLiteContext();
 
   const ayahs = useMemo(() => {
+    // 1. Check in-memory cache first for instant 0ms access
+    const cached = surahMemoryCache.get(surahId);
+    if (cached && cached.length > 0) {
+      return cached;
+    }
+
     try {
       const rows = db.getAllSync<AyahRow>(
         'SELECT id, surah_id, ayah_number, arabic_uthmani, tamil_translation, footnotes, juz, page FROM ayahs WHERE surah_id = ? ORDER BY ayah_number ASC;',
         [surahId]
       );
       if (rows && rows.length > 0) {
-        return rows.map((row) => ({
+        const mapped = rows.map((row) => ({
           id: row.id,
           surahId: row.surah_id,
           ayahNumber: row.ayah_number,
@@ -53,6 +62,8 @@ export function useSurahAyahs(surahId: number): {
           page: row.page,
           isPlaceholder: false,
         }));
+        surahMemoryCache.set(surahId, mapped);
+        return mapped;
       }
     } catch {
       // Fallback below

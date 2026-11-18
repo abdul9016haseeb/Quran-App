@@ -1,8 +1,8 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, useRoute, type RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { FlatList, type ListRenderItemInfo, StyleSheet, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -27,7 +27,7 @@ import {
 import { useSurahAyahs } from '../../data/quranRepository';
 import { AudioDock } from '../audio/components/AudioDock';
 import { AyahCard } from './components/AyahCard';
-import type { ReadingMode } from '../../types/content';
+import type { Ayah, ReadingMode } from '../../types/content';
 import type { RootStackParamList } from '../../navigation/types';
 
 const READING_MODES: readonly SegmentOption<ReadingMode>[] = [
@@ -65,27 +65,28 @@ export function SurahReaderScreen() {
 
   const activeBookmarked = isBookmarked(surah.id, activeAyah);
 
-  const handleTogglePlay = (ayahNumber: number) => {
-    if (activeAyah === ayahNumber) {
-      setIsPlaying((current) => !current);
-      return;
-    }
+  const handleTogglePlay = useCallback((ayahNumber: number) => {
+    setActiveAyah((prev) => {
+      if (prev === ayahNumber) {
+        setIsPlaying((current) => !current);
+        return prev;
+      }
+      setIsPlaying(true);
+      return ayahNumber;
+    });
+  }, []);
 
-    setActiveAyah(ayahNumber);
-    setIsPlaying(true);
-  };
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setActiveAyah((current) => (current >= ayahs.length ? 1 : current + 1));
     setIsPlaying(true);
-  };
+  }, [ayahs.length]);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     setActiveAyah((current) => (current <= 1 ? ayahs.length : current - 1));
     setIsPlaying(true);
-  };
+  }, [ayahs.length]);
 
-  const handleHeaderBookmark = () => {
+  const handleHeaderBookmark = useCallback(() => {
     toggleBookmark({
       id: `bookmark-${surah.id}-${activeAyah}`,
       surahId: surah.id,
@@ -94,39 +95,11 @@ export function SurahReaderScreen() {
       note: '',
       addedLabel: 'இன்று',
     });
-  };
+  }, [surah.id, surah.nameTamil, activeAyah, toggleBookmark]);
 
-  return (
-    <Screen edges={['top', 'left', 'right']}>
-      <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
-
-      <ScreenHeader
-        title={`${surah.id}. ${surah.nameTamil}`}
-        subtitle={`${surah.ayahCount} வசனங்கள் · ${getRevelationLabel(surah.revelation)}`}
-        right={
-          <>
-            <IconButton
-              name={activeBookmarked ? 'bookmark' : 'bookmark-outline'}
-              label="குறிப்பை மாற்று"
-              onPress={handleHeaderBookmark}
-              variant={activeBookmarked ? 'gold' : 'plain'}
-            />
-            <IconButton
-              name="text-outline"
-              label="வாசிப்பு அமைப்புகள்"
-              onPress={() => navigation.navigate('Appearance')}
-            />
-          </>
-        }
-      />
-
-      <ScrollView
-        contentContainerStyle={{
-          padding: theme.spacing.lg,
-          paddingBottom: 136 + insets.bottom,
-        }}
-        showsVerticalScrollIndicator={false}
-      >
+  const renderHeader = useMemo(
+    () => (
+      <View style={{ marginBottom: theme.spacing.lg }}>
         <View style={[styles.metaRow, { marginBottom: theme.spacing.md }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
             <AppText
@@ -305,57 +278,131 @@ export function SurahReaderScreen() {
             </AppText>
           </View>
         )}
+      </View>
+    ),
+    [
+      theme,
+      surah,
+      isPlaceholder,
+      readingMode,
+      setReadingMode,
+    ]
+  );
 
-        <View style={{ marginTop: theme.spacing.lg, gap: 12 }}>
-          {ayahs.map((ayah) => (
-            <AyahCard
-              key={ayah.id}
-              ayah={ayah}
-              readingMode={readingMode}
-              arabicFontSize={arabicFontSize}
-              tamilFontSize={tamilFontSize}
-              bookmarked={isBookmarked(surah.id, ayah.ayahNumber)}
-              active={activeAyah === ayah.ayahNumber}
-              playing={isPlaying && activeAyah === ayah.ayahNumber}
-              onToggleBookmark={() =>
-                toggleBookmark({
-                  id: `bookmark-${surah.id}-${ayah.ayahNumber}`,
-                  surahId: surah.id,
-                  ayahNumber: ayah.ayahNumber,
-                  surahName: surah.nameTamil,
-                  note: '',
-                  addedLabel: 'இன்று',
-                })
-              }
-              onTogglePlay={() => handleTogglePlay(ayah.ayahNumber)}
-            />
-          ))}
-        </View>
-
-        <View
-          style={{
-            marginTop: theme.spacing.lg,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            paddingHorizontal: 4,
-          }}
+  const renderFooter = useMemo(
+    () => (
+      <View
+        style={{
+          marginTop: theme.spacing.lg,
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          paddingHorizontal: 4,
+        }}
+      >
+        <Ionicons
+          name="information-circle-outline"
+          size={15}
+          color={theme.colors.textMuted}
+          style={{ marginTop: 1, marginRight: 6 }}
+        />
+        <AppText
+          variant="caption"
+          style={{ flex: 1, fontSize: 10, lineHeight: 16 }}
         >
-          <Ionicons
-            name="information-circle-outline"
-            size={15}
-            color={theme.colors.textMuted}
-            style={{ marginTop: 1, marginRight: 6 }}
-          />
-          <AppText
-            variant="caption"
-            style={{ flex: 1, fontSize: 10, lineHeight: 16 }}
-          >
-            வாசிப்புப் பயன்முறை, எழுத்துரு அளவு மற்றும் குறிப்புகள் இந்த
-            அமர்வில் மட்டுமே நிலைத்திருக்கும்; சேமிப்பு அடுக்கு அடுத்த கட்டத்தில்
-            இணைக்கப்படும்.
-          </AppText>
-        </View>
-      </ScrollView>
+          வாசிப்புப் பயன்முறை, எழுத்துரு அளவு மற்றும் குறிப்புகள் இந்த
+          அமர்வில் மட்டுமே நிலைத்திருக்கும்; சேமிப்பு அடுக்கு அடுத்த கட்டத்தில்
+          இணைக்கப்படும்.
+        </AppText>
+      </View>
+    ),
+    [theme]
+  );
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<Ayah>) => (
+      <AyahCard
+        ayah={item}
+        readingMode={readingMode}
+        arabicFontSize={arabicFontSize}
+        tamilFontSize={tamilFontSize}
+        bookmarked={isBookmarked(surah.id, item.ayahNumber)}
+        active={activeAyah === item.ayahNumber}
+        playing={isPlaying && activeAyah === item.ayahNumber}
+        onToggleBookmark={() =>
+          toggleBookmark({
+            id: `bookmark-${surah.id}-${item.ayahNumber}`,
+            surahId: surah.id,
+            ayahNumber: item.ayahNumber,
+            surahName: surah.nameTamil,
+            note: '',
+            addedLabel: 'இன்று',
+          })
+        }
+        onTogglePlay={() => handleTogglePlay(item.ayahNumber)}
+      />
+    ),
+    [
+      readingMode,
+      arabicFontSize,
+      tamilFontSize,
+      isBookmarked,
+      surah.id,
+      surah.nameTamil,
+      activeAyah,
+      isPlaying,
+      toggleBookmark,
+      handleTogglePlay,
+    ]
+  );
+
+  const keyExtractor = useCallback((item: Ayah) => item.id, []);
+
+  const renderSeparator = useCallback(
+    () => <View style={{ height: 12 }} />,
+    []
+  );
+
+  return (
+    <Screen edges={['top', 'left', 'right']}>
+      <StatusBar style={theme.mode === 'dark' ? 'light' : 'dark'} />
+
+      <ScreenHeader
+        title={`${surah.id}. ${surah.nameTamil}`}
+        subtitle={`${surah.ayahCount} வசனங்கள் · ${getRevelationLabel(surah.revelation)}`}
+        right={
+          <>
+            <IconButton
+              name={activeBookmarked ? 'bookmark' : 'bookmark-outline'}
+              label="குறிப்பை மாற்று"
+              onPress={handleHeaderBookmark}
+              variant={activeBookmarked ? 'gold' : 'plain'}
+            />
+            <IconButton
+              name="text-outline"
+              label="வாசிப்பு அமைப்புகள்"
+              onPress={() => navigation.navigate('Appearance')}
+            />
+          </>
+        }
+      />
+
+      <FlatList<Ayah>
+        data={ayahs}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        ItemSeparatorComponent={renderSeparator}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        contentContainerStyle={{
+          padding: theme.spacing.lg,
+          paddingBottom: 136 + insets.bottom,
+        }}
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={8}
+        maxToRenderPerBatch={10}
+        windowSize={5}
+        removeClippedSubviews
+      />
 
       <AudioDock
         reciterName={reciter.name}
