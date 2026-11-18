@@ -231,6 +231,42 @@ submission. No `LICENSE` file exists. Do not publish or claim open source.
 
 ---
 
+## ADR-012 — Offline Arabic Quran text: Tanzil Project (Uthmani)
+
+- **Status:** Accepted
+- **user-approved:** yes (owner confirmed Tanzil Uthmani text)
+- **Date:** 18 Nov 2026
+
+**Decision.** Use Tanzil Project Uthmani Quran text (Version 1.1) covering all 114
+Surahs and 6,236 Ayahs. Retain exact Uthmani diacritics and Harakat. License:
+Creative Commons Attribution 3.0. Attribution documented in constants and UI.
+
+---
+
+## ADR-013 — Offline Tamil translation: Shaykh Omar Sharif ibn Abdussalam (QuranEnc)
+
+- **Status:** Accepted
+- **user-approved:** yes (owner confirmed QuranEnc `tamil_omar`)
+- **Date:** 18 Nov 2026
+
+**Decision.** Use the complete 114-Surah (6,236 Ayah) Tamil translation by
+Shaykh Omar Sharif ibn Abdussalam sourced from QuranEnc.com. TNTJ / PJ translation
+is explicitly excluded. Attribution documented in constants and UI.
+
+---
+
+## ADR-014 — Bundled SQLite database with FTS5 search via expo-sqlite
+
+- **Status:** Accepted
+- **user-approved:** partial (owner requested complete offline reading)
+- **Date:** 18 Nov 2026
+
+**Decision.** Bundle a 13.5 MB SQLite database at `assets/quran.db` loaded via
+`expo-sqlite` and `metro.config.js`. Contains `surahs`, `ayahs`, and `ayahs_search`
+(FTS5) for instant offline reading and full-text search with zero network calls.
+
+---
+
 ## Pending owner decisions
 
 These are **not decided** and must not be treated as settled by any document or
@@ -238,12 +274,12 @@ UI copy. `user-approved: no` applies to all rows.
 
 | ID | Decision | Why it is blocked | What unblocks it |
 |---|---|---|---|
-| P-01 | Arabic Quran text edition and source | Redistribution terms and exact edition not verified | Written terms review; pin edition/version; checksum plan |
-| P-02 | Tamil translation edition | TNTJ permission absent; other editions unverified | Written permission or a verified licensed edition |
+| P-01 | Arabic Quran text edition and source | **RESOLVED (18 Nov 2026)** | Tanzil Uthmani (CC BY 3.0) adopted in ADR-012 |
+| P-02 | Tamil translation edition | **RESOLVED (18 Nov 2026)** | QuranEnc Omar Sharif adopted in ADR-013 |
 | P-03 | Recitation audio provider and rights | EveryAyah/Quran Foundation terms unverified; download rights unknown | Documented licence + coverage test |
 | P-04 | Backend: none vs Supabase vs Supabase + Node | No sync/accounts requirement confirmed; Quran Foundation OAuth needs a confidential client | Owner product decision |
 | P-05 | Accounts and cross-device sync | Not requested | Owner decision |
-| P-06 | Offline scope (reader / + audio / + AI) | Depends on P-01…P-03, P-10 | Content and audio decisions |
+| P-06 | Offline reading scope | **RESOLVED (18 Nov 2026)** | 100% offline text & translation in bundled SQLite (ADR-014) |
 | P-07 | Prayer calculation method and Asr madhab | Local mosque practice varies | Owner/locale decision; comparison with AlAdhan |
 | P-08 | Persistence for bookmarks/progress | Not in UI milestone | Owner approves storage scope |
 | P-09 | App licence and public repository | Owner has not chosen | Explicit owner instruction |

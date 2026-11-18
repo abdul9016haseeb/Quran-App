@@ -9,15 +9,15 @@ import { useAppTheme } from '../../app/providers/PreferencesProvider';
 import { AppText } from '../../components/ui/AppText';
 import { Card } from '../../components/ui/Card';
 import { EmptyState } from '../../components/ui/EmptyState';
-import { SampleBadge } from '../../components/ui/SampleBadge';
 import { Screen } from '../../components/ui/Screen';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { SearchField } from '../../components/ui/SearchField';
-import { MOCK_SURAHS } from '../../data/mock/surahs';
+import { findSurah, MOCK_SURAHS } from '../../data/mock/surahs';
+import { useQuranSearch } from '../../data/quranRepository';
 import { SurahRow } from '../quran/components/SurahRow';
 import type { RootStackParamList } from '../../navigation/types';
 
-const SUGGESTIONS = ['அல்ஃபாத்திஹா', 'அல்பகரா', 'யாசீன்', '2', 'மாடு'];
+const SUGGESTIONS = ['அல்ஃபாத்திஹா', 'அல்பகரா', 'யாஸீன்', 'முஹம்மத்', 'அல்லாஹ்'];
 
 export function SearchScreen() {
   const theme = useAppTheme();
@@ -25,7 +25,9 @@ export function SearchScreen() {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [query, setQuery] = useState('');
 
-  const results = useMemo(() => {
+  const { results: ayahResults, searching } = useQuranSearch(query);
+
+  const surahResults = useMemo(() => {
     const needle = query.trim().toLowerCase();
     if (!needle) {
       return [];
@@ -48,8 +50,7 @@ export function SearchScreen() {
 
       <ScreenHeader
         title="தேடல்"
-        subtitle="அத்தியாயம் மற்றும் வசன எண்"
-        right={<SampleBadge />}
+        subtitle="114 அத்தியாயங்கள் மற்றும் 6,236 வசனங்கள்"
       />
 
       <ScrollView
@@ -63,7 +64,7 @@ export function SearchScreen() {
         <SearchField
           value={query}
           onChangeText={setQuery}
-          placeholder="அத்தியாயம், பொருள் அல்லது எண்…"
+          placeholder="அத்தியாயம், வசனம் அல்லது பொருள்…"
         />
 
         {query.trim().length === 0 ? (
@@ -105,30 +106,29 @@ export function SearchScreen() {
               ))}
             </View>
 
-            <Card tone="gold" style={{ marginTop: theme.spacing.xl }}>
+            <Card tone="primary" style={{ marginTop: theme.spacing.xl }}>
               <View style={{ flexDirection: 'row' }}>
                 <Ionicons
-                  name="flask-outline"
+                  name="shield-checkmark-outline"
                   size={17}
-                  color={theme.colors.goldText}
+                  color={theme.colors.primary}
                   style={{ marginRight: 8, marginTop: 1 }}
                 />
                 <View style={{ flex: 1 }}>
                   <AppText
                     variant="subheading"
-                    color={theme.colors.goldText}
+                    color={theme.colors.primary}
                     style={{ fontSize: 13 }}
                   >
-                    உரைத் தேடல் இன்னும் இல்லை
+                    முழுமையான ஆஃப்லைன் தேடல்
                   </AppText>
                   <AppText
                     variant="caption"
-                    color={theme.colors.goldText}
-                    style={{ marginTop: 3, fontSize: 10, lineHeight: 16 }}
+                    color={theme.colors.textSecondary}
+                    style={{ marginTop: 3, fontSize: 11, lineHeight: 16 }}
                   >
-                    தற்போது சரிபார்க்கப்பட்ட 12 அத்தியாயங்களின் தலைப்புத்
-                    தகவல்களில் மட்டுமே தேட முடிகிறது. அரபு மற்றும் தமிழ்
-                    வசனத் தேடல் தரவுத்தளத்துடன் இணைக்கப்படும்.
+                    114 அத்தியாயங்களின் பெயர்கள், உத்மானி அரபு உரை மற்றும் ஷேக்
+                    உமர் ஷரீஃப் அவர்களின் தமிழ் மொழிபெயர்ப்பில் உடனடி தேடல்.
                   </AppText>
                 </View>
               </View>
@@ -136,44 +136,101 @@ export function SearchScreen() {
           </>
         ) : (
           <>
-            <View
-              style={[
-                styles.rowBetween,
-                { marginTop: theme.spacing.lg, marginBottom: theme.spacing.sm },
-              ]}
-            >
-              <AppText variant="caption">
-                {results.length} அத்தியாய முடிவுகள்
-              </AppText>
-              <AppText variant="caption" style={{ fontSize: 10 }}>
-                வசனத் தேடல் விரைவில்
-              </AppText>
-            </View>
+            {/* Surah Matches */}
+            {surahResults.length > 0 ? (
+              <View style={{ marginTop: theme.spacing.lg }}>
+                <View style={[styles.rowBetween, { marginBottom: theme.spacing.sm }]}>
+                  <AppText variant="caption">
+                    {surahResults.length} அத்தியாய முடிவுகள்
+                  </AppText>
+                </View>
+                <Card padded={false}>
+                  {surahResults.map((surah, index) => (
+                    <SurahRow
+                      key={surah.id}
+                      surah={surah}
+                      showDivider={index !== surahResults.length - 1}
+                      onPress={() =>
+                        navigation.navigate('SurahReader', {
+                          surahId: surah.id,
+                        })
+                      }
+                    />
+                  ))}
+                </Card>
+              </View>
+            ) : null}
 
-            {results.length > 0 ? (
-              <Card padded={false}>
-                {results.map((surah, index) => (
-                  <SurahRow
-                    key={surah.id}
-                    surah={surah}
-                    showDivider={index !== results.length - 1}
-                    onPress={() =>
-                      navigation.navigate('SurahReader', {
-                        surahId: surah.id,
-                      })
-                    }
-                  />
-                ))}
-              </Card>
-            ) : (
-              <Card>
+            {/* Ayah Verse Matches */}
+            {ayahResults.length > 0 ? (
+              <View style={{ marginTop: theme.spacing.lg }}>
+                <View style={[styles.rowBetween, { marginBottom: theme.spacing.sm }]}>
+                  <AppText variant="caption">
+                    {ayahResults.length} வசன முடிவுகள்
+                  </AppText>
+                </View>
+                <View style={{ gap: 8 }}>
+                  {ayahResults.map((ayah) => {
+                    const surah = findSurah(ayah.surahId);
+                    return (
+                      <Pressable
+                        key={ayah.id}
+                        onPress={() =>
+                          navigation.navigate('SurahReader', {
+                            surahId: ayah.surahId,
+                          })
+                        }
+                        style={({ pressed }) => ({
+                          backgroundColor: theme.colors.surface,
+                          borderRadius: theme.radii.lg,
+                          padding: theme.spacing.md,
+                          borderWidth: 1,
+                          borderColor: theme.colors.border,
+                          opacity: pressed ? 0.75 : 1,
+                        })}
+                      >
+                        <View style={styles.rowBetween}>
+                          <AppText
+                            variant="label"
+                            color={theme.colors.primary}
+                            style={{ fontSize: 12 }}
+                          >
+                            {surah ? surah.nameTamil : `அத்தியாயம் ${ayah.surahId}`} : வசனம் {ayah.ayahNumber}
+                          </AppText>
+                          <Ionicons
+                            name="chevron-forward"
+                            size={14}
+                            color={theme.colors.textMuted}
+                          />
+                        </View>
+                        <AppText
+                          variant="body"
+                          style={{
+                            marginTop: 6,
+                            fontSize: 13,
+                            lineHeight: 20,
+                            color: theme.colors.text,
+                          }}
+                          numberOfLines={3}
+                        >
+                          {ayah.tamil}
+                        </AppText>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+            ) : null}
+
+            {surahResults.length === 0 && ayahResults.length === 0 && !searching ? (
+              <Card style={{ marginTop: theme.spacing.lg }}>
                 <EmptyState
                   icon="search-outline"
                   title="முடிவுகள் இல்லை"
-                  description="வேறு சொல் அல்லது அத்தியாய எண்ணை முயலுங்கள். உரைத் தேடல் இன்னும் இணைக்கப்படவில்லை."
+                  description="வேறு சொல் அல்லது அத்தியாய எண்ணை முயலுங்கள்."
                 />
               </Card>
-            )}
+            ) : null}
           </>
         )}
       </ScrollView>

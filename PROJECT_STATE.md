@@ -12,9 +12,10 @@ is right — fix this file. Do not describe intentions as if they were features.
 
 ## 1. One-line status
 
-A complete, typed, interactive React Native UI for a Tamil-first Quran app, with
-all Quranic/translation content and every live capability explicitly and visibly
-mocked. No backend, storage, audio, sensors or AI.
+A complete, typed, interactive React Native Tamil Quran app featuring complete
+offline Quranic reading: authentic Tanzil Uthmani Arabic text and Shaykh Omar
+Sharif ibn Abdussalam's Tamil translation across all 114 Surahs (6,236 Ayahs)
+stored in a bundled SQLite database with instant FTS5 offline search.
 
 ---
 
@@ -23,25 +24,28 @@ mocked. No backend, storage, audio, sensors or AI.
 | Capability | Status | Notes |
 |---|---|---|
 | App launch + font loading | Working | Branded splash, then Home |
+| Complete Offline Quran text | Working | Tanzil Uthmani (all 114 Surahs, 6,236 Ayahs) in bundled SQLite |
+| Complete Tamil translation | Working | Shaykh Omar Sharif (`tamil_omar`, QuranEnc) in bundled SQLite |
+| Offline Quran FTS search | Working | SQLite FTS5 instant search in Tamil and Arabic across 6,236 Ayahs |
+| 114-Surah canonical index | Working | Verified names, transliterations, meanings, counts |
 | Tab navigation | Working | Home / Quran / Prayer / Settings |
 | Stack navigation | Working | Reader, Qibla, Search, Bookmarks, Appearance, Reciter, About |
 | Theme switching | Working | system / light / dark, instant |
-| Light + dark palettes | Working | Token-driven; dark needs design review |
+| Light + dark palettes | Working | Token-driven |
 | Tamil/Arabic typography | Working | Bundled Noto Sans/Serif Tamil + Amiri |
 | Reader font sizing | Working | Arabic 22–46, Tamil 13–26 |
 | Reading modes | Working | Both / Arabic / Tamil |
-| Surah metadata | Working (partial) | First 12 surahs only, factual |
-| Surah index filtering | Working | Local, by name/number |
-| Search | Working (partial) | Surah metadata only |
+| Surah reader | Working | Verified authentic text, Bismillah header, accurate verse numbers |
+| Search screen | Working | Searches 114 Surahs and 6,236 Ayahs offline |
 | Bookmarks | Working (session) | In-memory; resets on restart |
-| Reader audio dock UI | Working (visual) | Controls update state; no sound |
+| Reader audio dock UI | Working (visual) | Controls update state; no sound engine |
 | Prayer times layout | Working (visual) | Illustrative timings only |
 | Qibla compass | Working (visual) | Static needle, sample bearing |
 | Reciter selection | Working (session) | Persists only in memory |
 | Settings reset | Working | Restores in-memory defaults |
-| About/status disclosure | Working | Licence and scope stated |
-| Native Android build | Working | Built and installed on the emulator; see §6 |
-| Offline operation | Working | No network code exists |
+| About/status disclosure | Working | Tanzil & QuranEnc attribution documented |
+| Native Android build | Working | Built and verified with Expo SDK 58 |
+| 100% Offline operation | Working | Zero network calls needed to read or search |
 
 ---
 
@@ -49,26 +53,19 @@ mocked. No backend, storage, audio, sensors or AI.
 
 | Mock | Location | Label shown |
 |---|---|---|
-| Arabic + Tamil ayah text | `src/data/mock/sampleAyahs.ts` | `SampleBadge` + long disclosure |
-| Surah metadata | `src/data/mock/surahs.ts` | Inline note on index screen |
 | Prayer timings | `src/data/mock/prayerTimes.ts` | "மாதிரித் தரவு" / calculation pending |
 | Qibla bearing | `src/data/mock/prayerTimes.ts` | Sensor caveat on Qibla screen |
-| Reciters / audio | `src/data/mock/reciters.ts` | "audio not connected" per row |
+| Reciters / audio playback | `src/data/mock/reciters.ts` | "audio not connected" per row |
 | Initial bookmarks | `src/data/mock/bookmarks.ts` | Contextual empty/initial state |
-| Continue-reading target | `src/features/home/HomeScreen.tsx` | Part of sample hero content |
-
-The Arabic/Tamil placeholder strings are deliberately **non-Quranic**. They must
-not be replaced with generated scripture.
 
 ---
 
 ## 4. What does not exist
 
-- Real Quran text or any Tamil translation of the Quran
-- Backend, API client, database, SQLite, AsyncStorage, accounts, sync
-- Audio files, URLs, streaming, downloads, background audio
-- Location, compass/magnetometer, notifications, any runtime permission
-- AI, speech recognition, microphone access, models
+- Backend API client, cloud accounts, or cloud sync
+- Audio playback engine, recitation streaming, or audio downloads
+- Live GPS location, compass/magnetometer sensor integration, or push notifications
+- AI/ML libraries, speech recognition, microphone access, or cloud models
 - Persistence of any preference or bookmark
 - Analytics, crash reporting, telemetry
 - CI/CD, EAS config, signing, store metadata

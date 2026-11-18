@@ -9,6 +9,18 @@ licence. Version numbers describe internal milestones, not public releases.
 
 ### Added
 
+- Complete offline SQLite database (`assets/quran.db`) bundled into native assets:
+  - Complete Tanzil Uthmani Arabic Quran text (all 114 Surahs, 6,236 Ayahs, CC BY 3.0 Tanzil Project).
+  - Complete Tamil translation by Shaykh Omar Sharif ibn Abdussalam (`tamil_omar`, QuranEnc.com).
+  - SQLite FTS5 full-text search table indexing all 6,236 verses for instant offline search in Tamil and Arabic.
+  - Complete 114-Surah canonical metadata index in `src/data/canonicalSurahs.ts` (Arabic names, Tamil names, transliterations, meanings, verse counts, revelation type).
+- Integrated `expo-sqlite` (~58.0.18) with `<SQLiteProvider>` and custom `metro.config.js` for `.db` asset bundling.
+- Repository layer in `src/data/quranRepository.ts` providing `useSurahAyahs` and `useQuranSearch`.
+- Full 114-surah listing in `SurahIndexScreen.tsx` with search and count metrics.
+- Authentic verse reader in `SurahReaderScreen.tsx` displaying verified Arabic text, Tamil translation, Bismillah header on Surahs 2..114, and data source disclosures.
+- Offline verse and surah search in `SearchScreen.tsx`.
+- Automated ingestion and validation pipeline in `scripts/fetch_datasets.py` and `scripts/build_quran_db.py`.
+
 - Initial Expo SDK 58 / React Native 0.88 / TypeScript 6 project for a
   Tamil-first Quran app.
 - Physical-device testing scripts: `npm run apk:debug` (two-ABI Debug APK for

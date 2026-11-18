@@ -26,6 +26,9 @@ export interface Ayah {
   ayahNumber: number;
   arabic: string;
   tamil: string;
+  footnotes?: string;
+  juz?: number;
+  page?: number;
   /**
    * True while the app is displaying layout placeholder text rather than
    * verified Quran text and a licensed Tamil translation.

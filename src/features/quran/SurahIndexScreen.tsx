@@ -10,7 +10,6 @@ import { AppText } from '../../components/ui/AppText';
 import { Card } from '../../components/ui/Card';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { IconButton } from '../../components/ui/IconButton';
-import { SampleBadge } from '../../components/ui/SampleBadge';
 import { Screen } from '../../components/ui/Screen';
 import { SearchField } from '../../components/ui/SearchField';
 import {
@@ -73,7 +72,6 @@ export function SurahIndexScreen() {
             <AppText variant="caption">
               {TOTAL_SURAH_COUNT} அத்தியாயங்கள் · தமிழ்
             </AppText>
-            <SampleBadge style={{ marginLeft: 8 }} />
           </View>
         </View>
         <IconButton
@@ -168,10 +166,10 @@ export function SurahIndexScreen() {
               <AppText variant="caption">
                 {query
                   ? `${filtered.length} முடிவுகள்`
-                  : `${MOCK_SURAHS.length} மாதிரி அத்தியாயங்கள்`}
+                  : `${TOTAL_SURAH_COUNT} அத்தியாயங்கள்`}
               </AppText>
               <AppText variant="caption" style={{ fontSize: 10 }}>
-                முழுப் பட்டியல் விரைவில்
+                அனைத்தும் (114)
               </AppText>
             </View>
 

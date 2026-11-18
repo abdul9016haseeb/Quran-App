@@ -24,6 +24,7 @@ import {
   getRevelationLabel,
   MOCK_SURAHS,
 } from '../../data/mock/surahs';
+import { useSurahAyahs } from '../../data/quranRepository';
 import { AudioDock } from '../audio/components/AudioDock';
 import { AyahCard } from './components/AyahCard';
 import type { ReadingMode } from '../../types/content';
@@ -52,7 +53,10 @@ export function SurahReaderScreen() {
   } = usePreferences();
 
   const surah = findSurah(route.params.surahId) ?? MOCK_SURAHS[0]!;
-  const ayahs = useMemo(() => getPlaceholderAyahs(surah), [surah]);
+  const { ayahs: dbAyahs } = useSurahAyahs(surah.id);
+  const placeholderAyahs = useMemo(() => getPlaceholderAyahs(surah), [surah]);
+  const ayahs = dbAyahs.length > 0 ? dbAyahs : placeholderAyahs;
+  const isPlaceholder = ayahs.length === 0 || ayahs[0]?.isPlaceholder;
   const reciter =
     MOCK_RECITERS.find((item) => item.id === reciterId) ?? MOCK_RECITERS[0]!;
 
@@ -145,7 +149,7 @@ export function SurahReaderScreen() {
               {surah.nameTransliteration}
             </AppText>
           </View>
-          <SampleBadge />
+          {isPlaceholder ? <SampleBadge /> : null}
         </View>
 
         <SegmentedControl
@@ -217,32 +221,90 @@ export function SurahReaderScreen() {
             {surah.meaningTamil} · {getRevelationLabel(surah.revelation)} ·{' '}
             {surah.ayahCount} வசனங்கள்
           </AppText>
+
+          {surah.id !== 1 && surah.id !== 9 ? (
+            <View
+              style={{
+                marginTop: theme.spacing.md,
+                paddingTop: theme.spacing.md,
+                borderTopWidth: StyleSheet.hairlineWidth,
+                borderTopColor: theme.colors.goldSoft,
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <AppText
+                variant="arabic"
+                align="center"
+                style={{
+                  fontSize: 22,
+                  lineHeight: 36,
+                  color: theme.colors.goldText,
+                }}
+              >
+                بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+              </AppText>
+              <AppText
+                variant="caption"
+                align="center"
+                color={theme.colors.textSecondary}
+                style={{ marginTop: 2, fontSize: 11 }}
+              >
+                பேரருளாளன் பேரன்பாளன் அல்லாஹ்வின் பெயரால்
+              </AppText>
+            </View>
+          ) : null}
         </View>
 
-        <Card
-          tone="gold"
-          style={{
-            marginTop: theme.spacing.md,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}
-        >
-          <Ionicons
-            name="flask-outline"
-            size={17}
-            color={theme.colors.goldText}
-            style={{ marginTop: 1, marginRight: 8 }}
-          />
-          <AppText
-            variant="caption"
-            color={theme.colors.goldText}
-            style={{ flex: 1, fontSize: 10, lineHeight: 16 }}
+        {isPlaceholder ? (
+          <Card
+            tone="gold"
+            style={{
+              marginTop: theme.spacing.md,
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}
           >
-            இங்குள்ள அரபு மற்றும் தமிழ் உரை வடிவமைப்புக்கான மாதிரி மட்டுமே;
-            சரிபார்க்கப்பட்ட குர்ஆன் உரை மற்றும் உரிமம் பெற்ற மொழிபெயர்ப்பு
-            இன்னும் இணைக்கப்படவில்லை.
-          </AppText>
-        </Card>
+            <Ionicons
+              name="flask-outline"
+              size={17}
+              color={theme.colors.goldText}
+              style={{ marginTop: 1, marginRight: 8 }}
+            />
+            <AppText
+              variant="caption"
+              color={theme.colors.goldText}
+              style={{ flex: 1, fontSize: 10, lineHeight: 16 }}
+            >
+              இங்குள்ள அரபு மற்றும் தமிழ் உரை வடிவமைப்புக்கான மாதிரி மட்டுமே;
+              சரிபார்க்கப்பட்ட குர்ஆன் உரை மற்றும் உரிமம் பெற்ற மொழிபெயர்ப்பு
+              இன்னும் இணைக்கப்படவில்லை.
+            </AppText>
+          </Card>
+        ) : (
+          <View
+            style={{
+              marginTop: theme.spacing.sm,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+            }}
+          >
+            <Ionicons
+              name="shield-checkmark-outline"
+              size={13}
+              color={theme.colors.primary}
+            />
+            <AppText
+              variant="caption"
+              color={theme.colors.textMuted}
+              style={{ fontSize: 10 }}
+            >
+              உத்மானி அரபு: Tanzil · தமிழாக்கம்: ஷேக் உமர் ஷரீஃப் (QuranEnc)
+            </AppText>
+          </View>
+        )}
 
         <View style={{ marginTop: theme.spacing.lg, gap: 12 }}>
           {ayahs.map((ayah) => (
