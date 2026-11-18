@@ -4,15 +4,18 @@ const { withGradleProperties } = require('@expo/config-plugins');
  * Build-performance settings for local development.
  *
  * These values are re-applied on every `expo prebuild`, so they survive
- * continuous native generation. They target the local x86_64 emulator by
- * default; override the ABI list when building for a physical device or a
- * release:
+ * continuous native generation. The default ABI list covers both the local
+ * x86_64 emulator and an arm64-v8a phone, so one Debug APK installs on either:
+ * the native C++ for each ABI is compiled once and then cached, and only a
+ * clean build pays for the second ABI. Override with TAMIL_QURAN_ARCHS when a
+ * different target is needed.
  *
- *   TAMIL_QURAN_ARCHS="x86_64,arm64-v8a" npx expo prebuild --platform android
+ *   TAMIL_QURAN_ARCHS="arm64-v8a" npx expo prebuild --platform android
  *
- * Do not ship a release with only x86_64.
+ * Do not ship a release with only x86_64 or arm64-v8a: `npm run apk:release`
+ * passes all four ABIs explicitly.
  */
-const ARCHS = process.env.TAMIL_QURAN_ARCHS || 'x86_64';
+const ARCHS = process.env.TAMIL_QURAN_ARCHS || 'x86_64,arm64-v8a';
 
 const PROPERTIES = {
   'org.gradle.jvmargs': '-Xmx3072m -XX:MaxMetaspaceSize=1024m',

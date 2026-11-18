@@ -39,11 +39,65 @@ npm run android        # open on a connected device/emulator
 
 ### Testing on a physical phone
 
-The dev build is compiled for **one ABI at a time** (`reactNativeArchitectures`
-in `android/gradle.properties`, default `x86_64` for the emulator). A phone is
-`arm64-v8a`, so it needs one of these routes.
+A Debug build defaults to **two ABIs**, `x86_64` (emulator) and `arm64-v8a`
+(phone), so **one APK installs on either target**:
 
-**Route 1 — Expo Go, no native build (fastest, best for UI work).**
+```bash
+npm run apk:debug          # one 97 MB APK, native-code: arm64-v8a, x86_64
+npm run device:install     # install it on whichever device ADB_SERIAL names
+npm start                  # Metro; JS changes do not need a rebuild
+```
+
+`plugins/withBuildPerformance.js` records the same list for `expo prebuild`,
+and `npm run apk:debug` also passes it on the command line, so the script works
+against the current `android/` folder too. If your generated
+`android/gradle.properties` still says `x86_64` (it predates this change), the
+scripts are unaffected — only a bare `./gradlew :app:assembleDebug` would build
+one ABI until the next prebuild.
+
+The cost of the second ABI is paid only when the native C++ cache is cold (a
+clean build, or after `npm install`). Once both ABIs are compiled the warm build
+is unchanged — measured at 8 s / 184 MB.
+
+`npm run android` is the fast one-target path: Expo CLI reads
+`ro.product.cpu.abilist` from the attached device, passes
+`-PreactNativeArchitectures=<abi>` to Gradle, and **replaces** the universal APK
+with a single-ABI one. That is fine when you only care about the device in front
+of you, but re-run `npm run apk:debug` before installing on the other target.
+The React Native Gradle plugin itself does no detection; plain
+`./gradlew :app:assembleDebug` always uses `reactNativeArchitectures` from
+`android/gradle.properties`.
+
+#### Device selection and the scripts
+
+An emulator and a phone attached at the same time is the normal setup, and it
+is where plain `adb` fails: `adb install` / `adb logcat` / `adb shell` print
+`more than one device/emulator` and stop. Every script below resolves the
+target once, in this order:
+
+1. `$ADB_SERIAL`
+2. `$ANDROID_SERIAL` (adb's own standard variable — use either)
+3. the only authorised device, when exactly one is attached
+
+If two devices are attached and neither variable is set, the script lists them
+and exits instead of guessing. `offline` and `unauthorized` devices are
+ignored when counting.
+
+| Script | Does |
+|---|---|
+| `npm run device:list` | `adb devices -l` |
+| `npm run apk:debug` | two-ABI Debug APK for emulator + phone, no device needed |
+| `npm run apk:release` | Release APK, all four ABIs, minification still off |
+| `npm run device:tcpip -- <ip>` | `adb tcpip 5555` on the phone, then `adb connect <ip>:5555` |
+| `npm run device:reverse` | `adb reverse tcp:8081 tcp:8081` on the target |
+| `npm run device:install` | install the Debug APK, then set up reverse |
+| `npm run device:install:release` | install the Release APK (no reverse; release bundles JS) |
+| `npm run device:logcat` | tail `ReactNativeJS` and `ReactNative` logs |
+
+`TAMIL_QURAN_ARCHS` overrides the Debug ABI list for one command, for example
+`TAMIL_QURAN_ARCHS=arm64-v8a npm run apk:debug` for a smaller phone-only APK.
+
+#### Route 1 — Expo Go, no native build (fastest, best for UI work)
 
 ```bash
 npx expo start --go        # scan the QR code with Expo Go
@@ -58,35 +112,62 @@ Every native module this project uses (`expo-font`, `expo-status-bar`,
 Expo Go's native runtime rather than our APK — so this route cannot verify
 native-manifest behaviour (see K-12).
 
-**Route 2 — a real dev build for the phone.**
+#### Route 2 — wireless adb (`adb tcpip`)
+
+The usual manual sequence is:
 
 ```bash
-npm run android:phone      # arm64-v8a Gradle build + install + adb reverse
-npm start                  # Metro
+adb tcpip 5555 && adb connect <phone-ip>:5555
+adb -s <phone-ip>:5555 reverse tcp:8081 tcp:8081
+scrcpy -s <phone-ip>:5555 --max-size=1024 --video-bit-rate=4M --turn-screen-off
 ```
 
-- `npm run apk:phone` only builds the APK; `npm run device:install` only
-  installs and sets up `adb reverse`; `npm run device:logcat` tails JS logs.
-- With **both** the emulator and the phone attached, target the phone
-  explicitly: `ADB_SERIAL=<serial> npm run device:install` (`adb devices`).
-- Wireless debugging (Android 11+) works: *Developer options → Wireless
-  debugging → Pair device with pairing code*, then
-  `adb pair <ip>:<port>` and `adb connect <ip>:<port>`. `adb reverse` still works
-  over that connection.
-- The Gradle `-P` flag overrides `gradle.properties` for that invocation only,
-  so nothing has to be edited. It also **overwrites**
-  `android/app/build/outputs/apk/debug/app-debug.apk` with an arm64 APK; the
-  next `npm run android` rebuilds the x86_64 one.
-- Each ABI list gets its own `.cxx` configuration, so the first arm64 build
-  recompiles the C++ modules once (~a few minutes). Later switches reuse the
-  cached configuration.
+Two things in it interact with this project:
 
-Do **not** rely on the `TAMIL_QURAN_ARCHS` environment variable for
-`expo run:android`: Expo CLI skips prebuild when `android/` already exists, so
-the variable only takes effect with an explicit
-`TAMIL_QURAN_ARCHS="x86_64,arm64-v8a" npx expo prebuild --platform android`.
-That is the right move only if you want a single APK that works on both targets
-and accept the extra C++ compile on every clean build.
+- **`adb tcpip` fails while the emulator is running** (`more than one
+  device/emulator`) because it must be addressed to the phone over USB.
+  `npm run device:tcpip -- <phone-ip>` targets the non-emulator device
+  explicitly and then connects.
+- **The serial changes.** It is `<ip>:<port>` and the IP comes from DHCP
+  (hotspot gateways are often `192.168.43.1`), so a hard-coded serial stops
+  working after reconnecting. Re-run `adb devices` and pass the current one.
+
+After `adb connect`, both the emulator and the phone are attached, so set
+`ADB_SERIAL` (or `ANDROID_SERIAL`) for the scripts:
+
+```bash
+export ADB_SERIAL=<phone-ip>:5555
+npm run apk:debug && npm run device:install
+npm start
+```
+
+`adb reverse` works over TCP and is what lets the phone reach Metro on
+`localhost:8081`. `scrcpy` is independent of the build scripts; nothing here
+conflicts with it, and `--turn-screen-off` only affects the phone's display.
+
+Wireless debugging (Android 11+, *Developer options → Wireless debugging →
+Pair device with pairing code*) is an alternative to `adb tcpip`: `adb pair
+<ip>:<port>`, then `adb connect <ip>:<port>`; `adb reverse` works there too.
+
+#### Route 3 — USB
+
+With USB debugging on, install the universal APK over USB with
+`npm run apk:debug && npm run device:install`, or let Expo CLI pick the device:
+`npm run android -- -d <serial>`. Installing the 97 MB universal APK takes
+longer over Wi-Fi than over USB, which is the only real cost of shipping both
+ABIs in one file.
+
+#### ABI caveats
+
+- Changing the ABI list makes Gradle create a separate `.cxx` configuration and
+  recompile the C++ modules for any ABI it has not built yet (a few minutes the
+  first time). Reusing a list that has been built before is cached.
+- The default list lives in `plugins/withBuildPerformance.js`, so
+  `expo prebuild` keeps it. `npm run apk:debug` passes it on the command line
+  too, which means it works against the existing `android/` folder without
+  running prebuild again.
+- `npm run apk:release` pins all four ABIs on purpose: a release must never
+  inherit a two-ABI dev list. Re-enable minification before publishing.
 
 ### Known environment quirks
 
@@ -193,16 +274,21 @@ source URL, checksum, licence/attribution) and a validation step.
 
 ## 7. Git
 
-- The repository has one commit (`Initial commit: Tamil Quran UI foundation`)
-  and no remote. Do not rewrite or force-push it; add new commits unless the
-  owner explicitly asks for an amend.
+- **No git write without the owner's explicit permission.** Do not commit,
+  amend, merge, rebase, revert, tag, push, reset, stash, clean, or create/delete
+  branches unless the owner asked for that specific action. Finish the work,
+  report it, and let the owner decide. See `AGENTS.md` §6.1.
+- The repository is on `master` with no remote. Do not rewrite or force-push;
+  do not create the initial commit or any other commit on your own initiative.
 - `android/`, `ios/`, `node_modules/`, `.expo/` are ignored.
 - Use imperative subjects that state reality, for example:
   - `Add prayer monthly table layout`
   - `Fix Tamil line height in reader`
   - not `Implement prayer API` when only the UI exists.
 
-Suggested future branch names: `ui/<area>`, `docs/<area>`, `fix/<area>`.
+Branch naming: `feature/<area>` for new work (for example
+`feature/home-screen`), `fix/<area>` for bug fixes, `docs/<area>` for
+documentation-only changes.
 
 ---
 

@@ -3,7 +3,7 @@
 **Last updated:** 18 November 2026
 **Milestone:** 0 — UI foundation
 **Version:** 0.1.0
-**Repository state:** no commits, no remote, no licence chosen
+**Repository state:** `master` with two commits, no remote, no licence chosen
 
 This is the canonical handover document. If it disagrees with the code, the code
 is right — fix this file. Do not describe intentions as if they were features.
@@ -144,6 +144,7 @@ Full analysis: `docs/performance/BUILD_PERFORMANCE_ANALYSIS.md`.
 | Measurement | Value |
 |---|---|
 | Warm `./gradlew :app:assembleDebug` | **22 s**, 13 of 223 tasks executed, 1.3 GB peak RSS |
+| Warm `npm run apk:debug` (two ABIs) | **8 s**, 184 MB peak, 97 MB APK / 38 `.so` (`arm64-v8a` + `x86_64`) |
 | `npx expo export --platform android` | **12–13 s**, 2.5 MB Hermes bundle + **1.9 MB** assets (was 11 MB total / 7.9 MB assets) |
 | Metro dev-server start | ~3.5 s |
 | First-ever native build (previous session) | 33 m 46 s — included 4 ABIs, Gradle 9.4.1 download, emulator running, zram swapping |
@@ -157,9 +158,14 @@ compiled for four ABIs at once, and the emulator plus 16 parallel compiler jobs
 exhausted 13 GB of RAM into zram.
 
 Current dev configuration is applied by `plugins/withBuildPerformance.js`
-(re-applied on every `expo prebuild`): `reactNativeArchitectures=x86_64`,
+(re-applied on every `expo prebuild`): `reactNativeArchitectures=x86_64,arm64-v8a`,
 `org.gradle.workers.max=6`, `org.gradle.caching=true`,
 `org.gradle.jvmargs=-Xmx3072m`, R8 and PNG crunching disabled.
+
+Two ABIs are built on purpose: one Debug APK then installs on the emulator and
+on the phone. `npm run apk:debug` produces it (97 MB, 38 `.so`, 8 s warm);
+`npm run android` still narrows to the attached device's ABI for a faster
+one-target build.
 
 Font and icon imports use package sub-paths
 (`@expo-google-fonts/<family>/<weight>`, `@expo/vector-icons/Ionicons`) so only
@@ -174,10 +180,12 @@ Two operational rules matter more than any config value:
    `node_modules/expo-modules-core/android/build` (313 MB of C++) and the next
    build recompiles it.
 
-**Physical phone:** the dev build is x86_64-only, so the phone needs either
-Expo Go (`npx expo start --go`, no build) or `npm run android:phone`, which
-builds `arm64-v8a` and installs over adb. Recipes and caveats are in
-`docs/development/WORKFLOW.md` §2.
+**Physical phone:** `npm run apk:debug` builds one APK for both the emulator and
+the phone, and `npm run device:install` installs it on whichever device
+`ADB_SERIAL` names. `npm run device:tcpip -- <ip>` sets up wireless adb, and
+`npx expo start --go` needs no build at all. Emulator and phone attached at once
+is ambiguous, so the scripts honour `ADB_SERIAL` or adb's `ANDROID_SERIAL` and
+refuse to guess. Recipes are in `docs/development/WORKFLOW.md` §2.
 
 ---
 

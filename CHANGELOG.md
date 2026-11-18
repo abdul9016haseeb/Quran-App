@@ -11,10 +11,23 @@ licence. Version numbers describe internal milestones, not public releases.
 
 - Initial Expo SDK 58 / React Native 0.88 / TypeScript 6 project for a
   Tamil-first Quran app.
-- Physical-device testing scripts: `npm run android:phone` (arm64-v8a Debug
-  build + install + `adb reverse`), plus `apk:phone`, `device:install` and
-  `device:logcat`. Documented in `docs/development/WORKFLOW.md` §2 together with
-  the Expo Go route for phones.
+- Physical-device testing scripts: `npm run apk:debug` (two-ABI Debug APK for
+  emulator + phone), `apk:release`, `device:install`, `device:install:release`
+  and `device:logcat`. Documented in `docs/development/WORKFLOW.md` §2 together
+  with the Expo Go route for phones.
+- `npm run device:tcpip -- <ip>` for wireless adb, and `device:reverse` /
+  `device:list`. Device-targeting scripts now live in `scripts/adb-target.sh`,
+  which honours `ADB_SERIAL` **or** adb's standard `ANDROID_SERIAL` and refuses
+  to guess when an emulator and a phone are both attached.
+
+### Changed
+
+- Debug builds contain **two ABIs** (`x86_64` + `arm64-v8a`) again, so one APK
+  installs on the emulator and on a physical phone. `npm run apk:debug` builds
+  it (97 MB, 38 `.so`, 8 s warm) and `npm run device:install` installs it on
+  whichever device `ADB_SERIAL` names. `npm run apk:release` pins all four ABIs.
+  The single-ABI default was the cause of the install failures and the
+  `-P` juggling; the only new cost is one extra C++ pass on a clean build.
 - Design system in `src/theme/tokens.ts`: green/white/gold light palette, dark
   palette, spacing, radii, type scale, line heights and shadows.
 - Theme provider with `system` / `light` / `dark` preference and resolved theme
