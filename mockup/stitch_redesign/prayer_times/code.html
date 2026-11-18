@@ -1,0 +1,459 @@
+<!DOCTYPE html><html lang="ta"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&amp;family=EB+Garamond:wght@400;500;600;700&amp;family=Noto+Sans+Tamil:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "inverse-surface": "#33302d", "on-primary": "#ffffff", "on-tertiary-fixed-variant": "#3f4946", "error-container": "#ffdad6", "error": "#ba1a1a", "inverse-on-surface": "#f7efeb", "on-secondary-container": "#785a1a", "on-error-container": "#93000a", "background": "#fff8f5", "inverse-primary": "#a6d0be", "secondary-fixed-dim": "#e9c176", "surface-tint": "#3f6658", "tertiary-container": "#2a3431", "secondary": "#775a19", "outline-variant": "#c1c8c3", "surface-dim": "#e0d8d5", "secondary-fixed": "#ffdea5", "surface": "#fff8f5", "on-primary-container": "#79a292", "tertiary-fixed": "#dae5e0", "surface-container-highest": "#e9e1dd", "on-surface-variant": "#414845", "on-secondary-fixed-variant": "#5d4201", "primary-fixed": "#c1ecda", "surface-container-high": "#eee7e3", "on-surface": "#1e1b19", "surface-container-lowest": "#ffffff", "secondary-container": "#fed488", "outline": "#717975", "tertiary": "#151f1c", "on-error": "#ffffff", "surface-container-low": "#faf2ee", "surface-container": "#f4ece8", "on-background": "#1e1b19", "on-secondary": "#ffffff", "tertiary-fixed-dim": "#bec9c4", "on-tertiary-fixed": "#141d1b", "on-tertiary-container": "#919c98", "on-primary-fixed-variant": "#274e41", "on-tertiary": "#ffffff", "on-primary-fixed": "#002117", "on-secondary-fixed": "#261900", "surface-bright": "#fff8f5", "primary-fixed-dim": "#a6d0be", "surface-variant": "#e9e1dd", "primary-container": "#0f382c", "primary": "#002218" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-xs": "0.25rem", "space-md": "1rem", "space-sm": "0.5rem", "margin": "1rem", "space-lg": "1.5rem", "space-xl": "2.25rem", "gutter": "1rem" }, fontFamily: { "headline-lg": ["EB Garamond"], "display-lg-mobile": ["EB Garamond"], "label-sm": ["Plus Jakarta Sans"], "scripture-tamil": ["Noto Sans Tamil"], "display-lg": ["EB Garamond"], "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "headline-md": ["EB Garamond"], "scripture-arabic": ["Amiri"], "label-md": ["Plus Jakarta Sans"] }, fontSize: { "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }], "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "16px", "fontWeight": "700" }], "scripture-tamil": ["17px", { "lineHeight": "28px", "fontWeight": "400" }], "display-lg": ["34px", { "lineHeight": "42px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "scripture-arabic": ["26px", { "lineHeight": "52px", "fontWeight": "400" }], "label-md": ["13px", { "lineHeight": "18px", "fontWeight": "600" }] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#fff8f5;color:#1e1b19;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(28,25,23,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><button aria-label="Back" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><div class="flex flex-col items-center"><h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight leading-none">தொழுகை நேரங்கள்</h1><span class="font-label-sm text-label-sm text-on-surface-variant">Prayer Times</span></div><button aria-label="Share" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95"><span class="material-symbols-outlined text-[22px]">share</span></button></div></header><main class="flex-1 w-full pt-16 pb-24 bg-surface flex flex-col"><div class="flex flex-col w-full pb-6 space-y-4">
+<!-- Location & Live Time Header Section -->
+<div class="px-margin pt-1">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm flex items-center justify-between">
+<div class="flex items-center space-x-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-primary-container text-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center space-x-1">
+<span class="font-headline-md text-headline-md text-primary font-bold truncate">Colachel</span>
+<button aria-label="Refresh GPS" class="text-on-surface-variant hover:text-primary transition-transform active:rotate-180 duration-500 flex items-center" id="refresh-location-btn">
+<span class="material-symbols-outlined text-[16px]">sync</span>
+</button>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">குமரி மாவட்டம், தமிழ்நாடு</span>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0 pl-space-xs">
+<div class="flex items-baseline space-x-1">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tight" id="live-time-display">10:54 AM</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold" id="live-seconds-display">09</span>
+</div>
+<div class="flex items-center space-x-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+<span class="font-label-sm text-label-sm">IST (UTC+05:30)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Banner & Battery Setup Card -->
+<div class="px-margin">
+<div class="bg-surface-container rounded-xl p-space-md shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">தொழுகை அறிவிப்புகள்</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">சரியான நேரத்தில் பாங்கு எச்சரிக்கை</span>
+</div>
+</div>
+<button aria-checked="true" class="w-12 h-6 rounded-full bg-primary-container p-0.5 transition-colors relative flex items-center" id="notification-toggle-btn" role="switch">
+<span class="w-5 h-5 rounded-full bg-surface-container-lowest shadow-md transform translate-x-6 transition-transform" id="toggle-knob"></span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-1"><button class="bg-surface-container-lowest text-left p-space-sm rounded-lg flex items-center justify-between shadow-sm active:scale-[0.98] transition-transform col-span-2" id="adhan-selector-btn"><div class="flex items-center space-x-1.5 min-w-0"><span class="material-symbols-outlined text-[18px] text-secondary shrink-0">volume_up</span><div class="flex items-center space-x-2 min-w-0"><span class="font-label-sm text-label-sm text-on-surface-variant">அறிவிப்பு ஒலி:</span><span class="font-label-sm text-label-sm text-primary font-bold truncate" id="current-sound-label">முழு பாங்கு</span></div></div><span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">expand_more</span></button><div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center justify-between shadow-sm"><div class="flex items-center space-x-1.5 min-w-0"><span class="material-symbols-outlined text-[18px] text-surface-tint shrink-0" style="font-variation-settings: 'FILL' 1;">battery_charging_full</span><span class="font-label-sm text-label-sm text-on-surface font-medium truncate">பேட்டரி</span></div><span class="material-symbols-outlined text-[16px] text-surface-tint shrink-0">check_circle</span></div><div class="bg-surface-container-lowest p-space-sm rounded-lg flex items-center justify-between shadow-sm"><div class="flex items-center space-x-1.5 min-w-0"><span class="material-symbols-outlined text-[18px] text-surface-tint shrink-0" style="font-variation-settings: 'FILL' 1;">alarm_on</span><span class="font-label-sm text-label-sm text-on-surface font-medium truncate">அலாரம்</span></div><span class="material-symbols-outlined text-[16px] text-surface-tint shrink-0">check_circle</span></div></div>
+</div>
+</div>
+<!-- Tab Switcher (Today, Tomorrow, Monthly Schedule) -->
+<div class="px-margin">
+<div class="bg-surface-container-highest p-1 rounded-full flex items-center justify-between">
+<button class="tab-button flex-1 py-1.5 rounded-full font-label-md text-label-md font-semibold text-center transition-all bg-primary-container text-on-primary shadow-sm" data-tab="today">
+        இன்று
+      </button>
+<button class="tab-button flex-1 py-1.5 rounded-full font-label-md text-label-md font-semibold text-center text-on-surface-variant transition-all hover:text-primary" data-tab="tomorrow">
+        நாளை
+      </button>
+<button class="tab-button flex-1 py-1.5 rounded-full font-label-md text-label-md font-semibold text-center text-on-surface-variant transition-all hover:text-primary" data-tab="monthly">
+        மாத அட்டவணை
+      </button>
+</div>
+</div>
+<!-- 5 Waqt Prayer Times List -->
+<div class="px-margin space-y-2.5">
+<div class="flex items-center justify-between px-1">
+<span class="font-label-md text-label-md text-on-surface-variant font-bold tracking-wide uppercase">ஐவேளைத் தொழுகை அட்டவணை</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">1448 ஜமாஅத்துல் அவ்வல் 22</span>
+</div>
+<!-- 1. Fajr -->
+<div class="prayer-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between transition-transform active:scale-[0.99]">
+<div class="flex items-center space-x-space-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">wb_twilight</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md text-primary font-bold">பஜர்</span>
+<span class="font-scripture-arabic text-[18px] text-on-surface-variant">الفجر</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">வைகறை விடியல் நேரம்</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<span class="font-headline-md text-headline-md font-bold text-primary">05:00 AM</span>
+<button aria-label="Toggle Fajr Alarm" class="prayer-bell-btn w-8 h-8 rounded-full bg-surface-container-low text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</div>
+</div>
+<!-- 2. Dhuhr (Active Current Prayer Highlight) -->
+<div class="prayer-row bg-primary-container text-on-primary rounded-xl p-space-md shadow-md flex items-center justify-between relative overflow-hidden transform scale-[1.01]">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-surface-tint/20 rounded-full pointer-events-none"></div>
+<div class="flex items-center space-x-space-md relative z-10">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0 shadow-sm animate-pulse">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">sunny</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center space-x-2">
+<span class="font-headline-md text-headline-md text-on-primary font-bold">லுஹர்</span>
+<span class="font-scripture-arabic text-[18px] text-secondary-fixed">الظهر</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">இப்போது</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim">நண்பகல் தொழுகை வேளை</span>
+</div>
+</div>
+<div class="flex items-center space-x-3 relative z-10">
+<span class="font-headline-md text-headline-md font-bold text-secondary-fixed">12:07 PM</span>
+<button aria-label="Active Dhuhr Alarm" class="prayer-bell-btn w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[18px] animate-bounce" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+</button>
+</div>
+</div>
+<!-- 3. Asr -->
+<div class="prayer-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between transition-transform active:scale-[0.99]">
+<div class="flex items-center space-x-space-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">wb_sunny</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md text-primary font-bold">அஸ்ர்</span>
+<span class="font-scripture-arabic text-[18px] text-on-surface-variant">العصر</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">பிற்பகல் நிழல் நீளும் நேரம்</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<span class="font-headline-md text-headline-md font-bold text-primary">03:27 PM</span>
+<button aria-label="Toggle Asr Alarm" class="prayer-bell-btn w-8 h-8 rounded-full bg-surface-container-low text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</div>
+</div>
+<!-- 4. Maghrib -->
+<div class="prayer-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between transition-transform active:scale-[0.99]">
+<div class="flex items-center space-x-space-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">wb_twilight</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md text-primary font-bold">மக்ரிப்</span>
+<span class="font-scripture-arabic text-[18px] text-on-surface-variant">المغرب</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">சூரிய அஸ்தமனம்</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<span class="font-headline-md text-headline-md font-bold text-primary">05:58 PM</span>
+<button aria-label="Toggle Maghrib Alarm" class="prayer-bell-btn w-8 h-8 rounded-full bg-surface-container-low text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</div>
+</div>
+<!-- 5. Isha -->
+<div class="prayer-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between transition-transform active:scale-[0.99]">
+<div class="flex items-center space-x-space-md">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant shrink-0">
+<span class="material-symbols-outlined text-[20px]">nightlight</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md text-primary font-bold">இஷா</span>
+<span class="font-scripture-arabic text-[18px] text-on-surface-variant">العشاء</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">இரவு தொழுகை நேரம்</span>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<span class="font-headline-md text-headline-md font-bold text-primary">07:11 PM</span>
+<button aria-label="Toggle Isha Alarm" class="prayer-bell-btn w-8 h-8 rounded-full bg-surface-container-low text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">notifications</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Interactive Qibla Compass Card -->
+<div class="px-margin pt-1 space-y-3">
+<!-- Dedicated Qibla Compass Screen Navigation Banner -->
+<a class="group block bg-gradient-to-tr from-primary-container via-primary-container to-[#1a4a3b] text-on-primary rounded-xl p-space-md shadow-md active:scale-[0.99] transition-all relative overflow-hidden" href="#">
+<div class="absolute -right-6 -bottom-6 w-28 h-28 bg-surface-tint/20 rounded-full pointer-events-none"></div>
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center space-x-space-sm min-w-0">
+<div class="w-11 h-11 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]">explore</span>
+</div>
+<div class="flex flex-col min-w-0 pr-2">
+<div class="flex items-baseline space-x-2">
+<span class="font-headline-md text-headline-md font-bold text-on-primary">கிப்லா திசைகாட்டி</span>
+<span class="font-scripture-arabic text-[16px] text-secondary-fixed leading-none">القبلة</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim truncate">மக்கா புனித கஅபாவின் திசையை துல்லியமாக அறிய</span>
+</div>
+</div>
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest/10 group-hover:bg-secondary-fixed group-hover:text-on-secondary-fixed-variant text-on-primary flex items-center justify-center transition-colors shrink-0">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</div>
+</div>
+</a>
+<!-- Prayer Calculation Methods & Time Format Settings Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-3">
+<div class="flex items-center justify-between pb-1 border-b border-surface-container">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">tune</span>
+<span class="font-label-md text-label-md text-primary font-bold">தொழுகை கணக்கீட்டு முறைகள்</span>
+</div>
+<span class="font-label-sm text-[11px] bg-surface-container px-2 py-0.5 rounded-full text-on-surface-variant font-medium">தானியங்கி</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<!-- Calculation Method Picker -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<span class="font-label-sm text-[11px] text-on-surface-variant mb-1">கணக்கீட்டு முறை</span>
+<div class="flex items-center justify-between cursor-pointer">
+<span class="font-label-sm text-label-sm text-primary font-bold truncate">MWL (Muslim World League)</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">expand_more</span>
+</div>
+</div>
+<!-- Asr Calculation Method (Shafi / Hanafi) -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col justify-between">
+<span class="font-label-sm text-[11px] text-on-surface-variant mb-1">அஸ்ர் கணக்கீடு (மத்ஹப்)</span>
+<div class="flex items-center justify-between cursor-pointer">
+<span class="font-label-sm text-label-sm text-primary font-bold truncate">ஷாஃபி / ஹம்பலி / மாலிகி</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Time Format Toggle & Hijri Adjustment Row -->
+<div class="flex items-center justify-between pt-1 text-on-surface-variant">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">more_time</span>
+<span class="font-label-sm text-label-sm">நேர வடிவம் (12 மணி / 24 மணி)</span>
+</div>
+<div class="flex items-center bg-surface-container rounded-lg p-0.5">
+<button class="px-2 py-0.5 rounded font-label-sm text-[11px] font-bold bg-surface-container-lowest text-primary shadow-sm">12 மணி</button>
+<button class="px-2 py-0.5 rounded font-label-sm text-[11px] text-on-surface-variant hover:text-primary transition-colors">24 மணி</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Monthly Prayer Calendar Button Preview -->
+<div class="px-margin pt-1">
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm flex items-center justify-between">
+<div class="flex items-center space-x-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-primary font-bold truncate">மாதாந்திர தொழுகை அட்டவணை</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant truncate">நவம்பர் 2026 / டிசம்பர் 2026</span>
+</div>
+</div>
+<button class="bg-secondary-fixed text-on-secondary-fixed-variant px-space-md py-1.5 rounded-lg font-label-sm text-label-sm font-bold flex items-center space-x-1 shrink-0 active:scale-95 transition-transform shadow-sm" id="open-calendar-modal-btn">
+<span>காண்க</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Adhan Alert Modal Dialog (Hidden by default) -->
+<div class="fixed inset-0 z-50 bg-inverse-surface/60 backdrop-blur-sm flex items-end justify-center p-0 transition-opacity opacity-0 pointer-events-none duration-300" id="adhan-modal">
+<div class="bg-surface-container-lowest rounded-t-2xl w-full max-w-md p-space-lg space-y-4 max-h-[751px] overflow-y-auto transform translate-y-full transition-transform duration-300">
+<div class="flex items-center justify-between pb-2">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-primary font-bold">பாங்கு ஒலி அமைப்புகள்</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">தொழுகை நேர எச்சரிக்கை ஒலியைத் தேர்வு செய்க</span>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant" id="close-modal-btn">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Tone Options -->
+<div class="space-y-2">
+<label class="adhan-option flex items-center justify-between p-3 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-secondary text-[22px]">volume_up</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold">முழு பாங்கு (மக்கா ஹரம்)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">அழகுற முழங்கும் முழுமையான பாங்கு ஒலி</span>
+</div>
+</div>
+<input checked="" class="accent-primary w-4 h-4" name="adhan-sound" type="radio" value="முழு பாங்கு">
+</label>
+<label class="adhan-option flex items-center justify-between p-3 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-secondary text-[22px]">notifications</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold">குறுகிய பாங்கு (மதீனா)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">சுருக்கமான தக்பீர் எச்சரிக்கை ஒலி</span>
+</div>
+</div>
+<input class="accent-primary w-4 h-4" name="adhan-sound" type="radio" value="குறுகிய பாங்கு">
+</label>
+<label class="adhan-option flex items-center justify-between p-3 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-secondary text-[22px]">vibration</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold">அதிர்வு மட்டும் (Vibrate)</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">மென்மையான அமைதியான அதிர்வு</span>
+</div>
+</div>
+<input class="accent-primary w-4 h-4" name="adhan-sound" type="radio" value="அதிர்வு மட்டும்">
+</label>
+</div>
+<button class="w-full bg-primary-container text-on-primary py-2.5 rounded-lg font-label-md text-label-md font-bold shadow-sm" id="save-adhan-choice-btn">
+        அமைத்து சேமிக்க
+      </button>
+</div>
+</div>
+</div>
+<script>
+  (function initPrayerQiblaScreen() {
+    // 1. Live second counter simulation
+    const secondsEl = document.getElementById('live-seconds-display');
+    if (secondsEl) {
+      setInterval(() => {
+        const now = new Date();
+        const secs = String(now.getSeconds()).padStart(2, '0');
+        secondsEl.textContent = secs;
+      }, 1000);
+    }
+
+    // 2. Notification Master Toggle
+    const notifToggle = document.getElementById('notification-toggle-btn');
+    const knob = document.getElementById('toggle-knob');
+    let isNotifActive = true;
+
+    if (notifToggle && knob) {
+      notifToggle.addEventListener('click', () => {
+        isNotifActive = !isNotifActive;
+        if (isNotifActive) {
+          notifToggle.classList.remove('bg-surface-dim');
+          notifToggle.classList.add('bg-primary-container');
+          knob.classList.remove('translate-x-0.5');
+          knob.classList.add('translate-x-6');
+          notifToggle.setAttribute('aria-checked', 'true');
+        } else {
+          notifToggle.classList.remove('bg-primary-container');
+          notifToggle.classList.add('bg-surface-dim');
+          knob.classList.remove('translate-x-6');
+          knob.classList.add('translate-x-0.5');
+          notifToggle.setAttribute('aria-checked', 'false');
+        }
+      });
+    }
+
+    // 3. Tab switching between Today, Tomorrow, and Month
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => {
+          b.className = 'tab-button flex-1 py-1.5 rounded-full font-label-md text-label-md font-semibold text-center text-on-surface-variant transition-all hover:text-primary';
+        });
+        btn.className = 'tab-button flex-1 py-1.5 rounded-full font-label-md text-label-md font-semibold text-center transition-all bg-primary-container text-on-primary shadow-sm';
+      });
+    });
+
+    // 4. Per-prayer bell micro-interactions
+    const bellButtons = document.querySelectorAll('.prayer-bell-btn');
+    bellButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+          if (icon.textContent.includes('notifications_off')) {
+            icon.textContent = 'notifications';
+            btn.classList.remove('text-outline-variant');
+            btn.classList.add('text-secondary');
+          } else {
+            icon.textContent = 'notifications_off';
+            btn.classList.remove('text-secondary');
+            btn.classList.add('text-outline-variant');
+          }
+        }
+      });
+    });
+
+    // 5. Adhan Selector Modal Handling
+    const adhanBtn = document.getElementById('adhan-selector-btn');
+    const adhanModal = document.getElementById('adhan-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const saveChoiceBtn = document.getElementById('save-adhan-choice-btn');
+    const soundLabel = document.getElementById('current-sound-label');
+
+    function openModal() {
+      if (!adhanModal) return;
+      adhanModal.classList.remove('opacity-0', 'pointer-events-none');
+      adhanModal.firstElementChild.classList.remove('translate-y-full');
+    }
+
+    function closeModal() {
+      if (!adhanModal) return;
+      adhanModal.classList.add('opacity-0', 'pointer-events-none');
+      adhanModal.firstElementChild.classList.add('translate-y-full');
+    }
+
+    if (adhanBtn) adhanBtn.addEventListener('click', openModal);
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    if (adhanModal) {
+      adhanModal.addEventListener('click', (e) => {
+        if (e.target === adhanModal) closeModal();
+      });
+    }
+
+    if (saveChoiceBtn) {
+      saveChoiceBtn.addEventListener('click', () => {
+        const checkedRadio = document.querySelector('input[name="adhan-sound"]:checked');
+        if (checkedRadio && soundLabel) {
+          soundLabel.textContent = checkedRadio.value;
+        }
+        closeModal();
+      });
+    }
+
+    // 6. Interactive Qibla Compass Gyro / Mouse tilt effect
+    const needle = document.getElementById('compass-needle');
+    let baseAngle = 294.4;
+
+    if (window.DeviceOrientationEvent && typeof window.DeviceOrientationEvent.requestPermission === 'function') {
+      const fsCompassBtn = document.getElementById('fullscreen-compass-btn');
+      if (fsCompassBtn) {
+        fsCompassBtn.addEventListener('click', () => {
+          window.DeviceOrientationEvent.requestPermission().then(response => {
+            if (response === 'granted') {
+              window.addEventListener('deviceorientation', handleOrientation);
+            }
+          }).catch(console.error);
+        });
+      }
+    } else if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', handleOrientation);
+    }
+
+    function handleOrientation(e) {
+      if (e.alpha !== null && needle) {
+        const heading = e.webkitCompassHeading || (360 - e.alpha);
+        const calibratedNeedle = (baseAngle - heading + 360) % 360;
+        needle.style.transform = `rotate(${calibratedNeedle}deg)`;
+      }
+    }
+
+    // Refresh button subtle rotation animation
+    const refreshBtn = document.getElementById('refresh-location-btn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        refreshBtn.classList.add('animate-spin');
+        setTimeout(() => refreshBtn.classList.remove('animate-spin'), 700);
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(28,25,23,0.05)]" data-active-classes="text-primary font-bold [&amp;&gt;div]:bg-primary-container [&amp;&gt;div]:text-on-primary [&amp;&gt;div]:shadow-[0_2px_8px_rgba(15,56,44,0.2)]"><div class="h-16 px-space-sm flex items-center justify-around"><a class="flex flex-col items-center justify-center flex-1 h-full py-space-xs text-on-surface-variant hover:text-primary transition-all group" data-path="home-dashboard" href="#"><div class="px-space-md py-space-xs rounded-full flex items-center justify-center transition-all"><span class="material-symbols-outlined text-[22px]">mosque</span></div><span class="font-label-sm text-label-sm mt-space-xs tracking-tight">முகப்பு</span></a><a class="flex flex-col items-center justify-center flex-1 h-full py-space-xs text-on-surface-variant hover:text-primary transition-all group" data-path="quran-surahs" href="#"><div class="px-space-md py-space-xs rounded-full flex items-center justify-center transition-all"><span class="material-symbols-outlined text-[22px]">menu_book</span></div><span class="font-label-sm text-label-sm mt-space-xs tracking-tight">குர்ஆன்</span></a><a aria-current="page" class="flex flex-col items-center justify-center flex-1 h-full py-space-xs transition-all group text-primary font-bold [&amp;&gt;div]:bg-primary-container [&amp;&gt;div]:text-on-primary [&amp;&gt;div]:shadow-[0_2px_8px_rgba(15,56,44,0.2)]" data-path="prayer-times-qibla" href="#"><div class="px-space-md py-space-xs rounded-full flex items-center justify-center transition-all"><span class="material-symbols-outlined text-[22px]">schedule</span></div><span class="font-label-sm text-label-sm mt-space-xs tracking-tight">தொழுகை</span></a><a class="flex flex-col items-center justify-center flex-1 h-full py-space-xs text-on-surface-variant hover:text-primary transition-all group" data-path="settings-saved" href="#"><div class="px-space-md py-space-xs rounded-full flex items-center justify-center transition-all"><span class="material-symbols-outlined text-[22px]">bookmarks</span></div><span class="font-label-sm text-label-sm mt-space-xs tracking-tight">அமைப்புகள்</span></a></div></nav>
+
+</body></html>

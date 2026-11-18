@@ -1,0 +1,31 @@
+This app is for my purposes
+
+Phase 1:-
+
+ Interface Same but creative design
+
+1.  everythings is good, but needs creative design.
+
+2.  We need to get the quran arabic text and translation in tamil first, english is optional future feature
+
+3. Needs audio of imam's for entire quran verse by verse.
+
+4. quran verse number search and tamil and arabic text search.
+
+5. Prayer time Calculation , reference api -> https://aladhan.com/prayer-times-api
+
+
+
+
+
+
+
+
+Prompt:-
+1. Full Quran arabic text, audio , timing that shows time of regions in tamilnadu.
+2. need iman's recitation.
+3. need transciption technology, like user recitating the quran. (like the tarteel app).
+4. layout is somewhat creative to the tntj quran app.
+5. extract data from the image screenshots.
+6. finding project structure, frontend and backup,
+7. suggest backend for this project is nodejs is good or no backup with transciption ai inside the phone.

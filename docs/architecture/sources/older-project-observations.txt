@@ -1,0 +1,31 @@
+observation from the older project:-
+
+Ai instructions:-
+
+prd_context.txt
+opencode.json
+agents.md
+requirements.md
+
+Document for design:-
+APJ-Abdul-Kalam-Police-Academy/Police_Academy_Full_PRD_Enhanced_Admin_Paywall.docx
+
+Assests:-
+1. having mockup ui
+2. also having additional generated ui.
+
+Android Setup:-
+1. Having Android Folder.
+2. gradlew architechural config
+
+
+eas config:-
+1. eas config,
+2. .easignore.
+
+
+
+
+
+
+

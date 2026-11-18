@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html lang="ta"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Noto+Sans+Tamil:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "background": "#fff8f5", "inverse-on-surface": "#f7efeb", "on-primary-fixed": "#002117", "primary-fixed-dim": "#a6d0be", "outline-variant": "#c1c8c3", "secondary-fixed": "#ffdea5", "inverse-primary": "#a6d0be", "surface-dim": "#e0d8d5", "primary": "#002218", "inverse-surface": "#33302d", "surface-container-lowest": "#ffffff", "on-primary-container": "#79a292", "secondary": "#775a19", "on-error": "#ffffff", "secondary-fixed-dim": "#e9c176", "on-secondary-fixed-variant": "#5d4201", "on-tertiary": "#ffffff", "on-tertiary-fixed-variant": "#3f4946", "outline": "#717975", "surface-container-highest": "#e9e1dd", "primary-fixed": "#c1ecda", "on-surface-variant": "#414845", "primary-container": "#0f382c", "surface-container-high": "#eee7e3", "tertiary-fixed": "#dae5e0", "on-secondary-container": "#785a1a", "tertiary": "#151f1c", "error": "#ba1a1a", "on-secondary-fixed": "#261900", "surface-tint": "#3f6658", "surface-container": "#f4ece8", "secondary-container": "#fed488", "tertiary-fixed-dim": "#bec9c4", "on-secondary": "#ffffff", "on-surface": "#1e1b19", "on-tertiary-fixed": "#141d1b", "on-tertiary-container": "#919c98", "on-error-container": "#93000a", "surface-variant": "#e9e1dd", "surface": "#fff8f5", "tertiary-container": "#2a3431", "on-background": "#1e1b19", "on-primary": "#ffffff", "surface-container-low": "#faf2ee", "on-primary-fixed-variant": "#274e41", "error-container": "#ffdad6", "surface-bright": "#fff8f5" }, borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, spacing: { "space-sm": "0.5rem", "space-xl": "2.25rem", "gutter": "1rem", "space-md": "1rem", "margin": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem" }, fontFamily: { "headline-lg": ["EB Garamond"], "body-lg": ["Plus Jakarta Sans"], "headline-md": ["EB Garamond"], "label-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "display-lg": ["EB Garamond"], "display-lg-mobile": ["EB Garamond"], "scripture-tamil": ["Noto Sans Tamil"], "scripture-arabic": ["Amiri"] }, fontSize: { "headline-lg": ["24px", { lineHeight: "32px", fontWeight: "600" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }], "headline-md": ["20px", { lineHeight: "28px", fontWeight: "500" }], "label-sm": ["11px", { lineHeight: "16px", fontWeight: "700" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }], "label-md": ["13px", { lineHeight: "18px", fontWeight: "600" }], "display-lg": ["34px", { lineHeight: "42px", fontWeight: "600" }], "display-lg-mobile": ["28px", { lineHeight: "36px", fontWeight: "600" }], "scripture-tamil": ["17px", { lineHeight: "28px", fontWeight: "400" }], "scripture-arabic": ["26px", { lineHeight: "52px", fontWeight: "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#fff8f5;color:#1e1b19;}body{overscroll-behavior-y:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen antialiased"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-16 px-gutter flex items-center justify-between gap-space-sm"><button aria-label="Back" class="w-11 h-11 flex items-center justify-center rounded-full text-primary hover:bg-surface-container transition-colors -ml-2" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><div class="flex-1 text-center min-w-0 px-space-xs"><h1 class="font-headline-md text-headline-md font-semibold text-primary tracking-tight truncate leading-tight">Reading Preferences</h1></div><div class="flex items-center gap-space-xs shrink-0"><button aria-label="More options" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[22px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-safe bg-surface px-margin"><div class="flex flex-col w-full pb-10 space-y-5">
+<!-- Live Interactive Manuscript Preview Card -->
+<section class="flex flex-col w-full">
+<div class="flex items-center justify-between px-space-xs mb-2">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[18px]">visibility</span>
+<span class="font-label-md text-label-md text-primary font-semibold tracking-wide">நேரடி முன்னோட்டம் (Live Preview)</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-fixed/40 px-2 py-0.5 rounded-full">சூரா அல்-ஃபாத்திஹா 1:2</span>
+</div>
+<!-- Manuscript Stage -->
+<div class="relative bg-surface-container-lowest rounded-xl p-4 shadow-sm overflow-hidden transition-all duration-300">
+<div class="absolute -right-10 -bottom-10 w-32 h-32 rounded-full bg-secondary-fixed/15 blur-2xl pointer-events-none"></div>
+<!-- Ayah Top Row -->
+<div class="flex items-center justify-between pb-3 mb-3 border-b-0 border-surface-container">
+<!-- Verse Number Badge -->
+<div class="w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md font-bold shadow-xs transition-all duration-300" id="preview-badge">
+<span class="material-symbols-outlined text-[16px] text-secondary" id="badge-icon">stars</span>
+<span class="text-secondary ml-0.5" id="badge-text">2</span>
+</div>
+<!-- Quick Preview Meta Controls -->
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="font-label-sm text-label-sm text-secondary-fixed-variant bg-surface-container px-2 py-0.5 rounded">ஆயத் 2</span>
+<button aria-label="Play verse sample" class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+</button>
+</div>
+</div>
+<!-- Arabic Scripture Segment -->
+<div class="w-full text-right py-1 transition-opacity duration-300" id="preview-arabic-block">
+<p class="font-scripture-arabic text-scripture-arabic text-primary leading-loose tracking-wide" dir="rtl">
+          الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ
+        </p>
+</div>
+<!-- Word-by-Word Preview (Toggleable) -->
+<div class="w-full my-2.5 pt-2 pb-1 transition-all duration-300" id="preview-wbw-block">
+<div class="grid grid-cols-4 gap-1.5 text-center">
+<div class="bg-surface-container-low rounded-lg p-1.5">
+<p class="font-scripture-arabic text-[15px] text-primary" dir="rtl">الْحَمْدُ</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant leading-tight mt-0.5">அனைத்துப் புகழும்</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-1.5">
+<p class="font-scripture-arabic text-[15px] text-primary" dir="rtl">لِلَّهِ</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant leading-tight mt-0.5">அல்லாஹ்வுக்கே</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-1.5">
+<p class="font-scripture-arabic text-[15px] text-primary" dir="rtl">رَبِّ</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant leading-tight mt-0.5">இறைவன்</p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-1.5">
+<p class="font-scripture-arabic text-[15px] text-primary" dir="rtl">الْعَالَمِينَ</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant leading-tight mt-0.5">அகிலங்களின்</p>
+</div>
+</div>
+</div>
+<!-- Transliteration (Toggleable) -->
+<div class="w-full pt-1 pb-1 transition-all duration-300" id="preview-translit-block">
+<p class="font-body-md text-label-sm text-secondary italic tracking-wide">
+          "அல்ஹம்து லில்லாஹி ரப்பில் ஆலமீன்" (Al-ḥamdu lillāhi rabbi l-ʿālamīn)
+        </p>
+</div>
+<!-- Tamil Translation Segment -->
+<div class="w-full mt-2 pt-2.5 pb-1 bg-surface-container-low rounded-lg px-3 transition-opacity duration-300" id="preview-tamil-block">
+<p class="font-scripture-tamil text-scripture-tamil text-on-surface leading-relaxed" id="preview-tamil-text">
+          அனைத்துப் புகழும் அகிலங்களின் இரட்சகனான அல்லாஹ்வுக்கே உரியது.
+        </p>
+</div>
+<!-- Tafsir Explanation Container (Toggleable) -->
+<div class="w-full mt-2 pt-2 pb-1.5 px-3 bg-secondary-fixed/20 rounded-lg transition-all duration-300" id="preview-tafsir-block">
+<div class="flex items-center gap-1 mb-1 text-secondary">
+<span class="material-symbols-outlined text-[15px]">menu_book</span>
+<span class="font-label-sm text-label-sm font-semibold">இப்னு கதீர் விளக்கவுரை:</span>
+</div>
+<p class="font-body-md text-[12px] text-on-surface-variant leading-normal">
+          'அல்-ஹம்து' என்பது முழுமையான நன்றியறிதலையும் புகழையும் குறிக்கிறது. வானங்கள், பூமி மற்றும் அவற்றிலுள்ள அனைத்து படைப்புகளையும் பரிபாலிப்பவன் அல்லாஹ் மட்டுமே.
+        </p>
+</div>
+</div>
+</section>
+<!-- 1. Script Display Mode (பார்வை முறை) -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">layers</span>
+<h2 class="font-label-md text-label-md font-semibold text-primary">பார்வை முறை (Display Mode)</h2>
+</div>
+<div class="grid grid-cols-3 gap-1.5 bg-surface-container p-1 rounded-lg">
+<button class="mode-tab py-2 px-1 text-center rounded font-label-md text-label-md bg-primary-container text-on-primary shadow-xs transition-colors" id="mode-both" onclick="setDisplayMode('both')" type="button">
+        இருமொழியும்
+      </button>
+<button class="mode-tab py-2 px-1 text-center rounded font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" id="mode-arabic" onclick="setDisplayMode('arabic')" type="button">
+        அரபு மட்டும்
+      </button>
+<button class="mode-tab py-2 px-1 text-center rounded font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" id="mode-tamil" onclick="setDisplayMode('tamil')" type="button">
+        தமிழ் மட்டும்
+      </button>
+</div>
+</section>
+<!-- 2. Tamil Typography Selection & Font Scaling -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">font_download</span>
+<div>
+<h2 class="font-label-md text-label-md font-semibold text-primary">தமிழ் எழுத்துரு (Tamil Font)</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">தமிழ் இணையக் கல்விக்கழக எழுத்துருக்கள்</p>
+</div>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-surface-container text-secondary font-semibold">TVA Certified</span>
+</div>
+<!-- Font Family Radio Tiles -->
+<div class="space-y-2">
+<!-- TAU-Marutham (Active) -->
+<button class="font-card w-full flex items-center justify-between p-3 rounded-lg bg-surface-container-low transition-colors text-left" onclick="selectFont('marutham', this)" type="button">
+<div class="flex items-center gap-3">
+<div class="font-radio-indicator w-4 h-4 rounded-full bg-primary-container flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-bold">TAU-Marutham (மருதம் - பரிந்துரை)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">தெளிவான நவீன வாசக வடிவம்</p>
+</div>
+</div>
+<span class="font-scripture-tamil text-[16px] text-primary">அஆஇ</span>
+</button>
+<!-- TAU-Bharathi -->
+<button class="font-card w-full flex items-center justify-between p-3 rounded-lg bg-surface transition-colors text-left" onclick="selectFont('bharathi', this)" type="button">
+<div class="flex items-center gap-3">
+<div class="font-radio-indicator w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-semibold">TAU-Bharathi (பாரதி)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">பாரம்பரிய செவ்வியல் பதிப்பு</p>
+</div>
+</div>
+<span class="font-scripture-tamil text-[16px] text-on-surface-variant">அஆஇ</span>
+</button>
+<!-- TAU-Valluvar -->
+<button class="font-card w-full flex items-center justify-between p-3 rounded-lg bg-surface transition-colors text-left" onclick="selectFont('valluvar', this)" type="button">
+<div class="flex items-center gap-3">
+<div class="font-radio-indicator w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-semibold">TAU-Valluvar (வள்ளுவர்)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">கம்பீரமான தலைப்பு எழுத்து நடை</p>
+</div>
+</div>
+<span class="font-scripture-tamil text-[16px] text-on-surface-variant">அஆஇ</span>
+</button>
+<!-- TAU-Kabilar -->
+<button class="font-card w-full flex items-center justify-between p-3 rounded-lg bg-surface transition-colors text-left" onclick="selectFont('kabilar', this)" type="button">
+<div class="flex items-center gap-3">
+<div class="font-radio-indicator w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-transparent"></span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-primary font-semibold">TAU-Kabilar (கபிலர்)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">கையெழுத்துச் சுவடி எழில்</p>
+</div>
+</div>
+<span class="font-scripture-tamil text-[16px] text-on-surface-variant">அஆஇ</span>
+</button>
+</div>
+<!-- Font Size Stepper -->
+<div class="pt-2 flex items-center justify-between bg-surface-container p-3 rounded-lg">
+<div>
+<p class="font-label-md text-label-md text-primary font-semibold">எழுத்து அளவு (Font Size)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">தமிழ் மொழிபெயர்ப்பின் அளவு</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-9 h-9 rounded-lg bg-surface-container-lowest text-primary active:bg-surface-container-high flex items-center justify-center shadow-xs" onclick="adjustFontSize(-1)" type="button">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<span class="font-label-md text-label-md font-bold text-primary w-10 text-center" id="font-size-val">17px</span>
+<button class="w-9 h-9 rounded-lg bg-surface-container-lowest text-primary active:bg-surface-container-high flex items-center justify-center shadow-xs" onclick="adjustFontSize(1)" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 3. Reading Layout & Elements Visibility -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">tune</span>
+<h2 class="font-label-md text-label-md font-semibold text-primary">அமைவு மற்றும் கூறுகள் (Layout &amp; Elements)</h2>
+</div>
+<!-- Reading Presentation Style -->
+<div class="flex flex-col space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant font-medium">வாசிப்பு பாணி (Reading Style)</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="style-btn p-3 rounded-lg bg-surface-container-low text-primary flex items-center gap-2 text-left" id="style-card" onclick="setReadingStyle('card')" type="button">
+<span class="material-symbols-outlined text-secondary text-[20px]">view_agenda</span>
+<div>
+<p class="font-label-md text-label-md font-bold leading-tight">வசனம் வாரியாக</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant">Card per Ayah</p>
+</div>
+</button>
+<button class="style-btn p-3 rounded-lg bg-surface text-on-surface-variant flex items-center gap-2 text-left" id="style-mushaf" onclick="setReadingStyle('mushaf')" type="button">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+<div>
+<p class="font-label-md text-label-md font-semibold leading-tight">தொடர் பக்கம்</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant">Mushaf Continuous</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Verse Number Badge Style Toggle -->
+<div class="pt-1 flex flex-col space-y-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant font-medium">வசன எண் சின்னம் (Verse Badge Shape)</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="shape-btn p-2.5 rounded-lg bg-secondary-container/40 text-on-secondary-container flex items-center justify-center gap-2" id="badge-octagram" onclick="setBadgeShape('octagram')" type="button">
+<span class="material-symbols-outlined text-[18px]">stars</span>
+<span class="font-label-md text-label-md font-semibold">அஷ்டகோணம் (Octagram)</span>
+</button>
+<button class="shape-btn p-2.5 rounded-lg bg-surface text-on-surface-variant flex items-center justify-center gap-2" id="badge-circle" onclick="setBadgeShape('circle')" type="button">
+<span class="material-symbols-outlined text-[18px]">radio_button_checked</span>
+<span class="font-label-md text-label-md">எளிய வட்டம் (Circle)</span>
+</button>
+</div>
+</div>
+<!-- Toggles List -->
+<div class="pt-2 space-y-3">
+<!-- Transliteration Switch -->
+<div class="flex items-center justify-between py-1">
+<div class="pr-2">
+<p class="font-label-md text-label-md text-primary font-medium">ஒலியெயர்ப்பு (Transliteration)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">தமிழ் எழுத்துக்களில் அரபு உச்சரிப்பு</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1 transition-colors duration-200 cursor-pointer" onclick="toggleOption('translit', this)" role="switch" type="button">
+<span class="w-4 h-4 rounded-full bg-on-primary translate-x-6 transition-transform duration-200 shadow-sm"></span>
+</button>
+</div>
+<!-- Tafsir Switch -->
+<div class="flex items-center justify-between py-1">
+<div class="pr-2">
+<p class="font-label-md text-label-md text-primary font-medium">விளக்கவுரை (Tafsir)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">முக்கிய வசனங்களுக்கான தஃப்ஸீர் குறிப்புகள்</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1 transition-colors duration-200 cursor-pointer" onclick="toggleOption('tafsir', this)" role="switch" type="button">
+<span class="w-4 h-4 rounded-full bg-on-primary translate-x-6 transition-transform duration-200 shadow-sm"></span>
+</button>
+</div>
+<!-- Word-by-Word Switch -->
+<div class="flex items-center justify-between py-1">
+<div class="pr-2">
+<p class="font-label-md text-label-md text-primary font-medium">சொல்-சொல்லான தமிழாக்கம் (Word-by-Word)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ஒவ்வொரு வார்த்தைக்கும் நேர்ப் பொருள்</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1 transition-colors duration-200 cursor-pointer" onclick="toggleOption('wbw', this)" role="switch" type="button">
+<span class="w-4 h-4 rounded-full bg-on-primary translate-x-6 transition-transform duration-200 shadow-sm"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- 4. Reading Comfort & Auto-Scroll -->
+<section class="bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col space-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">screen_rotation</span>
+<h2 class="font-label-md text-label-md font-semibold text-primary">வாசிப்பு வசதிகள் (Reading Comfort)</h2>
+</div>
+<!-- Auto-Scroll Speed Slider -->
+<div class="bg-surface-container-low p-3 rounded-lg space-y-2">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-primary font-medium">தானியங்கி ஸ்க்ரோல் வேகம் (Auto-Scroll)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ஓதும் வேகத்திற்கு ஏற்ப திரையை நகர்த்த</p>
+</div>
+<span class="font-label-md text-label-md font-bold text-secondary bg-secondary-container px-2 py-0.5 rounded" id="scroll-speed-label">30 px/s</span>
+</div>
+<div class="pt-2">
+<input class="w-full accent-primary h-2 bg-surface-container rounded-lg cursor-pointer" id="scroll-speed" max="80" min="10" oninput="updateScrollSpeed(this.value)" type="range" value="30"/>
+</div>
+<div class="flex justify-between font-label-sm text-[10px] text-on-surface-variant">
+<span>மெதுவாக (10)</span>
+<span>இயல்பு (30)</span>
+<span>வேகமாக (80)</span>
+</div>
+</div>
+<!-- Keep Awake Switch -->
+<div class="flex items-center justify-between py-1">
+<div class="pr-2">
+<p class="font-label-md text-label-md text-primary font-medium">திரை அணையாமல் இருக்க (Keep Screen Awake)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">ஓதும்போது காட்சித் திரை அணையாது</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1 transition-colors duration-200 cursor-pointer" onclick="toggleKeepAwake(this)" role="switch" type="button">
+<span class="w-4 h-4 rounded-full bg-on-primary translate-x-6 transition-transform duration-200 shadow-sm"></span>
+</button>
+</div>
+</section>
+<!-- 5. Reset Options Action -->
+<section class="flex flex-col items-center pt-2">
+<button class="w-full py-3.5 px-4 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant active:scale-[0.99] font-label-md text-label-md flex items-center justify-center gap-2 transition-all" onclick="resetToDefaults()" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+<span>இயல்பு அமைப்புகளுக்கு மீட்டமைக்க (Reset Preferences)</span>
+</button>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-3 text-center">
+      விருப்பங்கள் உங்கள் கணக்கில் தானாகச் சேமிக்கப்படுகின்றன.
+    </p>
+</section>
+</div>
+<script>
+  let currentFontSize = 17;
+
+  function setDisplayMode(mode) {
+    const arabicBlock = document.getElementById('preview-arabic-block');
+    const tamilBlock = document.getElementById('preview-tamil-block');
+    const tabs = document.querySelectorAll('.mode-tab');
+    
+    tabs.forEach(tab => {
+      tab.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-xs');
+      tab.classList.add('text-on-surface-variant');
+    });
+
+    const activeBtn = document.getElementById('mode-' + mode);
+    if (activeBtn) {
+      activeBtn.classList.remove('text-on-surface-variant');
+      activeBtn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-xs');
+    }
+
+    if (mode === 'both') {
+      arabicBlock.classList.remove('hidden');
+      tamilBlock.classList.remove('hidden');
+    } else if (mode === 'arabic') {
+      arabicBlock.classList.remove('hidden');
+      tamilBlock.classList.add('hidden');
+    } else if (mode === 'tamil') {
+      arabicBlock.classList.add('hidden');
+      tamilBlock.classList.remove('hidden');
+    }
+  }
+
+  function selectFont(fontName, element) {
+    document.querySelectorAll('.font-card').forEach(card => {
+      card.classList.remove('bg-surface-container-low');
+      card.classList.add('bg-surface');
+      const dot = card.querySelector('.font-radio-indicator');
+      const innerDot = dot ? dot.querySelector('span') : null;
+      if (dot && innerDot) {
+        dot.className = 'font-radio-indicator w-4 h-4 rounded-full bg-surface-container-highest flex items-center justify-center';
+        innerDot.className = 'w-1.5 h-1.5 rounded-full bg-transparent';
+      }
+    });
+
+    element.classList.remove('bg-surface');
+    element.classList.add('bg-surface-container-low');
+    const activeDot = element.querySelector('.font-radio-indicator');
+    const activeInnerDot = activeDot ? activeDot.querySelector('span') : null;
+    if (activeDot && activeInnerDot) {
+      activeDot.className = 'font-radio-indicator w-4 h-4 rounded-full bg-primary-container flex items-center justify-center';
+      activeInnerDot.className = 'w-1.5 h-1.5 rounded-full bg-on-primary';
+    }
+
+    const previewText = document.getElementById('preview-tamil-text');
+    if (fontName === 'bharathi') {
+      previewText.style.fontFamily = 'EB Garamond, serif';
+    } else {
+      previewText.style.fontFamily = 'Noto Sans Tamil, sans-serif';
+    }
+  }
+
+  function adjustFontSize(delta) {
+    currentFontSize = Math.max(13, Math.min(24, currentFontSize + delta));
+    const label = document.getElementById('font-size-val');
+    const previewText = document.getElementById('preview-tamil-text');
+    if (label) label.textContent = currentFontSize + 'px';
+    if (previewText) previewText.style.fontSize = currentFontSize + 'px';
+  }
+
+  function setReadingStyle(style) {
+    const cardBtn = document.getElementById('style-card');
+    const mushafBtn = document.getElementById('style-mushaf');
+
+    if (style === 'card') {
+      cardBtn.className = 'style-btn p-3 rounded-lg bg-surface-container-low text-primary flex items-center gap-2 text-left';
+      mushafBtn.className = 'style-btn p-3 rounded-lg bg-surface text-on-surface-variant flex items-center gap-2 text-left';
+    } else {
+      mushafBtn.className = 'style-btn p-3 rounded-lg bg-surface-container-low text-primary flex items-center gap-2 text-left';
+      cardBtn.className = 'style-btn p-3 rounded-lg bg-surface text-on-surface-variant flex items-center gap-2 text-left';
+    }
+  }
+
+  function setBadgeShape(shape) {
+    const badge = document.getElementById('preview-badge');
+    const badgeIcon = document.getElementById('badge-icon');
+    const btnOctagram = document.getElementById('badge-octagram');
+    const btnCircle = document.getElementById('badge-circle');
+
+    if (shape === 'octagram') {
+      badge.className = 'w-8 h-8 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md font-bold shadow-xs transition-all duration-300';
+      badgeIcon.textContent = 'stars';
+      btnOctagram.className = 'shape-btn p-2.5 rounded-lg bg-secondary-container/40 text-on-secondary-container flex items-center justify-center gap-2';
+      btnCircle.className = 'shape-btn p-2.5 rounded-lg bg-surface text-on-surface-variant flex items-center justify-center gap-2';
+    } else {
+      badge.className = 'w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-md text-label-md font-bold shadow-xs transition-all duration-300';
+      badgeIcon.textContent = 'circle';
+      btnCircle.className = 'shape-btn p-2.5 rounded-lg bg-secondary-container/40 text-on-secondary-container flex items-center justify-center gap-2';
+      btnOctagram.className = 'shape-btn p-2.5 rounded-lg bg-surface text-on-surface-variant flex items-center justify-center gap-2';
+    }
+  }
+
+  function toggleOption(type, btn) {
+    const isChecked = btn.getAttribute('aria-checked') === 'true';
+    const newState = !isChecked;
+    btn.setAttribute('aria-checked', String(newState));
+
+    const knob = btn.querySelector('span');
+    if (newState) {
+      btn.classList.remove('bg-surface-container-highest');
+      btn.classList.add('bg-primary-container');
+      knob.classList.remove('translate-x-0');
+      knob.classList.add('translate-x-6');
+    } else {
+      btn.classList.remove('bg-primary-container');
+      btn.classList.add('bg-surface-container-highest');
+      knob.classList.remove('translate-x-6');
+      knob.classList.add('translate-x-0');
+    }
+
+    if (type === 'wbw') {
+      const block = document.getElementById('preview-wbw-block');
+      if (block) block.classList.toggle('hidden', !newState);
+    } else if (type === 'translit') {
+      const block = document.getElementById('preview-translit-block');
+      if (block) block.classList.toggle('hidden', !newState);
+    } else if (type === 'tafsir') {
+      const block = document.getElementById('preview-tafsir-block');
+      if (block) block.classList.toggle('hidden', !newState);
+    }
+  }
+
+  function toggleKeepAwake(btn) {
+    const isChecked = btn.getAttribute('aria-checked') === 'true';
+    const newState = !isChecked;
+    btn.setAttribute('aria-checked', String(newState));
+    const knob = btn.querySelector('span');
+    if (newState) {
+      btn.classList.remove('bg-surface-container-highest');
+      btn.classList.add('bg-primary-container');
+      knob.classList.remove('translate-x-0');
+      knob.classList.add('translate-x-6');
+    } else {
+      btn.classList.remove('bg-primary-container');
+      btn.classList.add('bg-surface-container-highest');
+      knob.classList.remove('translate-x-6');
+      knob.classList.add('translate-x-0');
+    }
+  }
+
+  function updateScrollSpeed(val) {
+    const label = document.getElementById('scroll-speed-label');
+    if (label) label.textContent = val + ' px/s';
+  }
+
+  function resetToDefaults() {
+    setDisplayMode('both');
+    currentFontSize = 17;
+    const label = document.getElementById('font-size-val');
+    const previewText = document.getElementById('preview-tamil-text');
+    if (label) label.textContent = '17px';
+    if (previewText) {
+      previewText.style.fontSize = '17px';
+      previewText.style.fontFamily = 'Noto Sans Tamil, sans-serif';
+    }
+    const firstFontCard = document.querySelector('.font-card');
+    if (firstFontCard) selectFont('marutham', firstFontCard);
+    setReadingStyle('card');
+    setBadgeShape('octagram');
+    updateScrollSpeed(30);
+    const slider = document.getElementById('scroll-speed');
+    if (slider) slider.value = 30;
+  }
+</script></main></body></html>
