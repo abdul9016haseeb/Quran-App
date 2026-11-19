@@ -36,22 +36,7 @@ function AyahCardComponent({
   const showTamil = readingMode === 'both' || readingMode === 'tamil';
 
   return (
-    <View
-      style={[
-        styles.card,
-        {
-          backgroundColor: active
-            ? theme.colors.surfaceAccent
-            : theme.colors.surface,
-          borderColor: active ? theme.colors.gold : theme.colors.border,
-          borderLeftWidth: active ? 3 : 1,
-          borderLeftColor: active ? theme.colors.gold : theme.colors.border,
-          borderRadius: theme.radii.lg,
-          padding: theme.spacing.lg,
-        },
-        theme.mode === 'dark' ? null : theme.shadows.card,
-      ]}
-    >
+    <View>
       <View style={styles.topRow}>
         <View
           style={{
@@ -59,14 +44,16 @@ function AyahCardComponent({
             height: 30,
             paddingHorizontal: 8,
             borderRadius: theme.radii.xs,
-            backgroundColor: theme.colors.primarySoft,
+            backgroundColor: active
+              ? theme.colors.goldSoft
+              : theme.colors.primarySoft,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
           <AppText
             variant="label"
-            color={theme.colors.onPrimarySoft}
+            color={active ? theme.colors.goldText : theme.colors.onPrimarySoft}
             style={{ fontSize: 12 }}
           >
             {ayah.ayahNumber}
@@ -108,25 +95,17 @@ function AyahCardComponent({
       ) : null}
 
       {showTamil ? (
-        <View
+        <AppText
+          variant="readerTamil"
+          color={theme.colors.textSecondary}
           style={{
             marginTop: showArabic ? theme.spacing.md : theme.spacing.sm,
-            backgroundColor: active
-              ? theme.colors.surface
-              : theme.colors.surfaceMuted,
-            borderRadius: theme.radii.sm,
-            paddingHorizontal: theme.spacing.md,
-            paddingVertical: theme.spacing.sm,
+            fontSize: tamilFontSize,
+            lineHeight: tamilFontSize * 1.75,
           }}
         >
-          <AppText
-            variant="readerTamil"
-            color={theme.colors.textSecondary}
-            style={{ fontSize: tamilFontSize, lineHeight: tamilFontSize * 1.75 }}
-          >
-            {ayah.tamil}
-          </AppText>
-        </View>
+          {ayah.tamil}
+        </AppText>
       ) : null}
 
       {ayah.isPlaceholder ? (
@@ -155,9 +134,6 @@ export const AyahCard = React.memo(AyahCardComponent, (prev, next) => {
 });
 
 const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-  },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',

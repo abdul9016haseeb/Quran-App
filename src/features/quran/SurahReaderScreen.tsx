@@ -368,8 +368,17 @@ export function SurahReaderScreen() {
   const keyExtractor = useCallback((item: Ayah) => item.id, []);
 
   const renderSeparator = useCallback(
-    () => <View style={{ height: 12 }} />,
-    []
+    () => (
+      <View
+        style={{
+          height: StyleSheet.hairlineWidth * 2,
+          backgroundColor: theme.colors.textMuted,
+          opacity: 0.35,
+          marginVertical: theme.spacing.lg,
+        }}
+      />
+    ),
+    [theme.colors.textMuted, theme.spacing.lg]
   );
 
   return (

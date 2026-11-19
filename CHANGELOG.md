@@ -10,6 +10,17 @@ internal milestones, not public releases.
 
 ### Changed
 
+- Reworked the surah reader's verse section into a continuous reading layout
+  (visual experiment): per-ayah card backgrounds, borders, shadows, rounded
+  containers and the Tamil translation's tinted box were removed, and a
+  hairline divider separates verses. Verse numbers, bookmark and playback
+  controls, active-ayah state, reading modes, font sizing and placeholder
+  disclosures are unchanged. No data, navigation or business logic changed.
+- Made the surah reader's verse divider slightly more visible: it now uses the
+  muted text colour at 35% opacity at twice the hairline thickness, instead of
+  the near-invisible `divider` token at one hairline. Spacing around each
+  divider (`theme.spacing.lg`) is unchanged, and no other component, data or
+  behaviour changed.
 - Reconciled documentation and in-app status copy with the bundled offline Quran
   database and the owner-confirmed MIT licence: `About`, `Settings`, `Home`,
   `Appearance`, `Bookmarks` and the reader footer no longer claim that Quran
@@ -145,6 +156,9 @@ internal milestones, not public releases.
 - Home, Quran index, Reader (all three modes), Appearance (light/dark),
   Settings and Prayer Times render without crashing.
 - Screenshots captured under `/tmp/opencode/qa/` for the inspected screens.
+- Surah reader verse-layout experiment captured on the Android 14 emulator
+  (1080×2400) in light and dark mode and in both / Arabic / Tamil reading modes.
+  Before/after images are in `mockup/development_screenshots/`.
 
 ### Known limitations
 
