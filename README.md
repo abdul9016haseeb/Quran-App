@@ -3,19 +3,22 @@
 A Tamil-first Quran app for Android, built with React Native, TypeScript and
 Expo.
 
-> **Status: UI foundation (v0.1.0).** This repository contains a complete,
-> interactive interface — not a working Quran reader. There is no backend, no
-> database, no audio playback, no location/sensors and no AI. All Quran and
-> translation text on screen is clearly labelled placeholder copy.
+> **Status: working offline Quran reader (v0.1.0).** The app reads all 114
+> surahs (6,236 ayahs) from a bundled SQLite database containing Tanzil Uthmani
+> Arabic and the QuranEnc `tamil_omar` Tamil translation, with offline FTS5
+> search. There is still no backend, no audio playback, no location/sensors and
+> no AI. Prayer times, Qibla and the audio dock are clearly labelled mock UI.
 
 ---
 
 ## What this milestone is
 
 The purpose of this phase is to settle the visual language and information
-architecture before investing in content licensing, data pipelines or native
-features. It delivers:
+architecture, and to prove the offline content pipeline before native features.
+It delivers:
 
+- Verified offline Quran text and Tamil translation (114 surahs, 6,236 ayahs)
+- Offline full-text search in Tamil and Arabic
 - A green/white/gold design system with light, dark and system themes
 - Tamil and Arabic typography using bundled Noto and Amiri fonts
 - Typed navigation across the full screen set
@@ -24,10 +27,11 @@ features. It delivers:
 
 ## What this milestone is not
 
-- Not a source of Quran text or Tamil translation
+- Not a substitute for a printed mushaf or scholarly review of the translation
 - Not usable for prayer times or Qibla direction
-- Not connected to any API, database, account system or AI service
-- Not licensed for redistribution (no licence has been chosen)
+- Not connected to any API, account system or AI service; the Quran database is
+  bundled and read-only
+- Not free of third-party content terms: the MIT licence covers code only
 - Not ready for store submission
 
 ---
@@ -36,17 +40,17 @@ features. It delivers:
 
 | Screen | Purpose | Status |
 |---|---|---|
-| Home | Dashboard: continue reading, next prayer, quick actions | UI complete |
-| Quran | Surah index with local search | UI complete, 12 surahs |
-| Reader | Dual-language reading, modes, bookmarks, audio dock | UI complete, placeholder text |
-| Search | Surah metadata search | UI complete |
+| Home | Dashboard: sample continue-reading, next prayer, quick actions | UI complete |
+| Quran | Surah index with local search | 114 surahs, offline |
+| Reader | Dual-language reading, modes, bookmarks, audio dock | Real text offline; audio is visual only |
+| Search | Surah metadata + ayah full-text search | Offline; Arabic normalisation still limited |
 | Bookmarks | In-memory saved places | UI complete, session-only |
 | Prayer Times | Today, tomorrow, monthly table | UI complete, illustrative data |
 | Qibla | Compass and bearing | UI complete, static |
 | Reciter picker | Reciter selection | UI complete, no audio |
-| Settings | Preferences and project status | UI complete |
-| Appearance | Theme, font sizes, reading mode, live preview | UI complete, not persisted |
-| About | Scope, status and rights disclosure | UI complete |
+| Settings | Preferences and project status | Theme persisted; rest session-only |
+| Appearance | Theme, font sizes, reading mode, live preview | Theme persisted; sizes/mode session-only |
+| About | Scope, status, licence and attribution | UI complete |
 
 See `docs/development/SCREEN_SPEC.md` for behaviour and limitations.
 
@@ -139,29 +143,32 @@ prompts/                    ready-to-use prompts for AI agents
 
 ## Content and licensing
 
-This repository deliberately contains **no real Quranic text, no Tamil
-translation of the Quran, and no recitation audio**.
+The app source code is licensed **MIT** (see `LICENSE` on `develop`/`main`).
+Quran content and third-party assets keep their own terms:
 
-- Placeholder Arabic and Tamil strings in `src/data/mock/sampleAyahs.ts` are
-  non-Quranic sample copy and are marked in the UI.
-- Surah metadata is factual and limited to the first 12 surahs; the complete
-  verified dataset is pending.
-- The TNTJ Tamil translation is treated as all rights reserved until written
-  permission is obtained.
-- Arabic text sources, audio rights and prayer API terms have not been verified.
-- **No licence has been chosen for this repository.** There is intentionally no
-  `LICENSE` file and no repository URL is published.
+- **Arabic:** Tanzil Project Uthmani text (v1.1), CC BY 3.0, bundled in
+  `assets/quran.db`.
+- **Tamil:** Shaykh Omar Sharif ibn Abdussalam's `tamil_omar` translation from
+  QuranEnc.com, bundled under QuranEnc's terms. It is not offered as a separate
+  redistributable dataset.
+- **Fonts:** Amiri and Noto Sans/Serif Tamil, SIL Open Font License.
+- The TNTJ Tamil translation is treated as all rights reserved and is **not**
+  included.
+- No recitation audio is bundled; audio rights and prayer API terms are still
+  unresolved.
+- `src/data/mock/sampleAyahs.ts` contains non-Quranic fallback copy used only if
+  the database cannot be read, and is marked in the UI.
 
-See `docs/architecture/DECISIONS.md` (pending decisions) before adding any
-content or asset.
+See `docs/architecture/DECISIONS.md` before adding any content or asset.
 
 ---
 
 ## Roadmap
 
-1. **Phase 0 (current)** — UI foundation and review
-2. **Phase 1** — verified Arabic text + licensed Tamil translation + offline
-   SQLite + persistence
+1. **Phase 0 (review pending)** — UI foundation and review
+2. **Phase 1 (content done, persistence partial)** — verified Arabic text +
+   licensed Tamil translation + offline SQLite; bookmarks/progress persistence
+   and DB provenance still open
 3. **Phase 2** — prayer calculation, location, working Qibla
 4. **Phase 3** — licensed recitation audio
 5. **Phase 4** — measured AI recitation-feedback proof of concept
@@ -173,7 +180,7 @@ Details and entry criteria: `docs/development/IMPLEMENTATION_PLAN.md`.
 
 ## Contributing
 
-Read `AGENTS.md` and `requirements.md` first. Do not add real scripture,
-translation, audio, backend code or permissions without an owner decision
-recorded in `docs/architecture/DECISIONS.md`. Do not create the initial Git
-commit unless the owner asks.
+Read `AGENTS.md` and `requirements.md` first. Do not replace the bundled
+scripture or translation, add audio, backend code or permissions without an
+owner decision recorded in `docs/architecture/DECISIONS.md`. Do not commit,
+merge, rebase or push unless the owner asks.

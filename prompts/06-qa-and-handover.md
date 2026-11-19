@@ -51,8 +51,10 @@ the 20-step smoke test in `docs/development/TESTING.md` §3. For each screen not
 
 Confirm:
 
-- [ ] No real Quran text or translation has been introduced.
-- [ ] No backend, storage, audio, sensors, permissions or AI code exists.
+- [ ] Quran text and translation come from the bundled database and match the
+      documented sources.
+- [ ] No backend, audio, sensors, permissions or AI code exists; only the approved
+      Quran database and theme storage are present.
 - [ ] Prayer Times and Qibla are separate.
 - [ ] No `LICENSE` file or repository URL was invented.
 - [ ] No sample badge was removed.

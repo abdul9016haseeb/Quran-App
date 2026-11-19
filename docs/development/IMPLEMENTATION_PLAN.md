@@ -1,7 +1,8 @@
 # Implementation Plan — Tamil Quran App
 
-**Current milestone:** 0 — UI foundation (**in progress / near complete**)
-**Last updated:** 18 November 2026
+**Current milestone:** Phase 0 review + Phase 1 content (**content delivered,
+persistence and QA partial**)
+**Last updated:** 19 November 2026
 
 Plans are ordered by dependency, not enthusiasm. A phase does not start until its
 entry criteria are met and its blocking owner decisions are recorded in
@@ -36,7 +37,9 @@ entry criteria are met and its blocking owner decisions are recorded in
 - Owner approves the visual direction or supplies concrete changes.
 - No hidden mock data is mistaken for live functionality.
 
-**Explicit non-goals:** real content, persistence, network, audio, sensors, AI.
+**Original non-goals:** real content, persistence, network, audio, sensors, AI.
+Real Quran content and the bundled database were delivered early in Phase 1;
+network, audio, sensors and AI remain out.
 
 ---
 
@@ -44,8 +47,11 @@ entry criteria are met and its blocking owner decisions are recorded in
 
 **Goal:** real Quran reading, offline, with user state that survives restarts.
 
-**Blocked by:** P-01 (Arabic edition), P-02 (Tamil translation), P-08
-(persistence scope).
+**Status (19 Nov 2026):** content is bundled and readable offline. Remaining
+work: a reproducible manifest/checksum, bookmarks/reading-position persistence,
+scholarly QA, and fixes for Arabic search normalisation and reader deep-linking.
+
+**Blocked by:** P-08 (persistence scope). P-01 and P-02 are resolved.
 
 **Work**
 
@@ -174,8 +180,8 @@ shaping at large sizes.
 ## Sequencing summary
 
 ```text
-Phase 0  UI foundation           ← now
-Phase 1  Verified content + SQLite
+Phase 0  UI foundation               ← review pending
+Phase 1  Verified content + SQLite   ← content done; persistence/QA partial
 Phase 2  Prayer + Qibla
 Phase 3  Audio
 Phase 4  AI proof of concept

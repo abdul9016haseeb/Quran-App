@@ -301,7 +301,9 @@ mirror is not evidence of rights.
 - **Other Tamil translations:** must be verified for translator/publisher,
   edition, accuracy, attribution, modification rights, and commercial/non-
   commercial redistribution. "Available on a website" ≠ licensed for bundling.
-- **v1 UI:** placeholder text only, visibly marked. This is deliberate.
+- **Current build:** verified Tanzil Uthmani and QuranEnc `tamil_omar` content is
+  bundled in SQLite with attribution. Non-Quranic sample copy survives only as a
+  clearly marked fallback when the database cannot be read.
 
 ### 7.3 Integrity controls (required before release)
 
@@ -436,8 +438,9 @@ later, harder problem and must not be implied by a generic ASR demo.
 
 **Open-source friendliness:** Expo, React Native, SQLite, Supabase and adhan-js
 have open-source paths. Quran text/translation/audio rights are the real
-constraints, not the software licences. The project licence itself is undecided;
-do not claim MIT/GPL until the owner chooses and third-party notices are audited.
+constraints, not the software licences. The app's own source is now MIT
+(ADR-016); third-party notices and content terms must still be audited before a
+store release.
 
 ---
 
@@ -469,9 +472,9 @@ do not claim MIT/GPL until the owner chooses and third-party notices are audited
 └──────────────────────────────────────────────┘
 ```
 
-**Now:** UI only, no backend, no real content, no audio, no AI.
-**Next:** verified Arabic + licensed Tamil content in a read-only SQLite database,
-repository abstraction, persistence for preferences/bookmarks.
+**Now:** UI plus verified offline reading/search; no backend, audio or AI.
+**Next:** reproducible content manifest, persistence for bookmarks/position, and
+the Arabic-search/deep-link fixes.
 **Then:** prayer calculation/cache, Qibla sensors, audio (licensed), AI POC.
 
 ---

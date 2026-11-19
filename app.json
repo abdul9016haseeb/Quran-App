@@ -28,7 +28,8 @@
     "plugins": [
       "expo-font",
       "expo-system-ui",
-      "./plugins/withBuildPerformance"
+      "./plugins/withBuildPerformance",
+      "expo-sqlite"
     ]
   }
 }

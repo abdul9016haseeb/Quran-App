@@ -8,7 +8,8 @@ import { NotoSerifTamil_400Regular } from '@expo-google-fonts/noto-serif-tamil/4
 import { NotoSerifTamil_600SemiBold } from '@expo-google-fonts/noto-serif-tamil/600SemiBold';
 import { NotoSerifTamil_700Bold } from '@expo-google-fonts/noto-serif-tamil/700Bold';
 import { useFonts } from 'expo-font';
-import React from 'react';
+import { SQLiteProvider } from 'expo-sqlite';
+import React, { Suspense } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -47,7 +48,20 @@ export function AppRoot() {
   return (
     <SafeAreaProvider>
       <PreferencesProvider>
-        <RootNavigator />
+        <Suspense
+          fallback={
+            <View style={styles.loading}>
+              <ActivityIndicator color="#C5A059" size="small" />
+            </View>
+          }
+        >
+          <SQLiteProvider
+            databaseName="quran.db"
+            assetSource={{ assetId: require('../../assets/quran.db') }}
+          >
+            <RootNavigator />
+          </SQLiteProvider>
+        </Suspense>
       </PreferencesProvider>
     </SafeAreaProvider>
   );

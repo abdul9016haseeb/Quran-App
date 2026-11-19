@@ -253,7 +253,7 @@ export function HomeScreen() {
 
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={`கடைசியாகப் படித்தது: அல்பகரா, வசனம் ${continueTarget.ayah}`}
+            accessibilityLabel={`மாதிரித் தொடர் வாசிப்பு: அல்பகரா, வசனம் ${continueTarget.ayah}`}
             onPress={() =>
               navigation.navigate('SurahReader', {
                 surahId: continueTarget.surahId,
@@ -292,13 +292,13 @@ export function HomeScreen() {
             </View>
             <View style={{ flex: 1 }}>
               <AppText variant="caption" color={theme.colors.textMuted}>
-                கடைசியாகப் படித்தது
+                தொடர் வாசிப்பு · மாதிரி
               </AppText>
               <AppText variant="subheading" style={{ marginTop: 1 }}>
                 அல்பகரா · வசனம் {continueTarget.ayah}
               </AppText>
               <AppText variant="caption" style={{ fontSize: 10 }}>
-                பாகம் 30 · தமிழ் மொழிபெயர்ப்புடன்
+                பாகம் 3 · தமிழ் மொழிபெயர்ப்புடன்
               </AppText>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
@@ -307,7 +307,7 @@ export function HomeScreen() {
                 color={theme.colors.primary}
                 style={{ fontSize: 11 }}
               >
-                42%
+                தொடர்
               </AppText>
               <Ionicons
                 name="chevron-forward"
@@ -519,8 +519,8 @@ export function HomeScreen() {
               align="center"
               style={{ fontSize: 10, lineHeight: 16 }}
             >
-              UI மாதிரி · குர்ஆன் உரை, மொழிபெயர்ப்பு மற்றும் ஒலி இன்னும்
-              இணைக்கப்படவில்லை.
+              குர்ஆன் உரையும் தமிழாக்கமும் ஆஃப்லைனில் தயார் · ஒலி இன்னும்
+              இணைக்கப்படவில்லை · தொழுகை நேரங்கள் மாதிரித் தரவு.
             </AppText>
           </View>
         </View>

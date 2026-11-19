@@ -41,9 +41,9 @@ Focus areas, in order:
 
 - Do **not** add dependencies.
 - Do **not** add backend, storage, audio, sensors, permissions or AI.
-- Do **not** replace placeholder Qur'an/Tamil content with real or generated
-  scripture.
-- Do **not** remove `SampleBadge`, `SAMPLE_DATA_LONG`, or pending-data notices.
+- Do **not** alter the bundled Qur'an/Tamil text; fallback copy must stay
+  non-Quranic and clearly marked.
+- Do **not** remove `SampleBadge`, `SAMPLE_DATA_LONG`, or fallback disclosures.
 - Do **not** merge Prayer Times and Qibla.
 - Do **not** introduce raw colour or font values in feature files; extend
   `src/theme/tokens.ts` instead.

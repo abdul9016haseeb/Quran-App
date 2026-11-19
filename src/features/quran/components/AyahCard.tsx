@@ -19,7 +19,7 @@ interface AyahCardProps {
   onTogglePlay: () => void;
 }
 
-export function AyahCard({
+function AyahCardComponent({
   ayah,
   readingMode,
   arabicFontSize,
@@ -141,6 +141,18 @@ export function AyahCard({
     </View>
   );
 }
+
+export const AyahCard = React.memo(AyahCardComponent, (prev, next) => {
+  return (
+    prev.ayah.id === next.ayah.id &&
+    prev.readingMode === next.readingMode &&
+    prev.arabicFontSize === next.arabicFontSize &&
+    prev.tamilFontSize === next.tamilFontSize &&
+    prev.bookmarked === next.bookmarked &&
+    prev.active === next.active &&
+    prev.playing === next.playing
+  );
+});
 
 const styles = StyleSheet.create({
   card: {

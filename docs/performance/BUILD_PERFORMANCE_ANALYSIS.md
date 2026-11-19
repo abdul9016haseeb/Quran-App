@@ -6,6 +6,11 @@
 `APJ-Abdul-Kalam-Police-Academy`, and whether `mockup/` is compiled.
 **Status:** Investigation complete. **No configuration was changed.**
 
+> **Note (19 Nov 2026):** the export-size figures below were measured before
+> `assets/quran.db` (14.2 MB) was bundled. Current Android exports are ~18 MB;
+> the DB now dominates the asset total. Build timings and the font sub-path
+> findings are unchanged.
+
 ---
 
 ## 1. Investigation summary
@@ -67,9 +72,10 @@ Measured facts recorded in that session, in order:
 | 10:27 | User asks why the build is slow |
 | ~10:29 | `free -h` snapshot: Gradle daemon ≈3.1 GB, two Kotlin daemons ≈1.1 GB, emulator ≈2 GB, **zram swap 5.9 GB in use**, swap I/O (`si`/`so`) 50–100 MB/s |
 | 10:33 | `reactNativeArchitectures` changed to `x86_64`; `org.gradle.workers.max=6`; caching enabled |
-| 10:46 | Debug APK rebuilt — **x86_64 only**, 55 MB |
+| 10:46 | Debug APK rebuilt — **x86_64 only**, 55 MB (superseded on 18 Nov: two ABIs by default again, see §9) |
 | 11:11 | Release APK built by the owner — **4 ABIs, R8 minification, baseline profiles**, 78 MB |
 | 12:27–12:33 | Settings moved into `plugins/withBuildPerformance.js` so `expo prebuild` cannot silently undo them |
+| 13:32 (18 Nov) | Default changed back to **two ABIs** (`x86_64,arm64-v8a`) so one Debug APK serves emulator and phone: **97 MB, 38 `.so`, 8 s warm** |
 | — | While testing, the emulator was also running, competing for RAM |
 
 There is **no session evidence** that the note's "184 compile/link steps" or
@@ -86,6 +92,10 @@ peak RSS of the build tree: 1.3 GB
 
 **That is the number to judge the project by.** A 22 s incremental Debug build
 is normal and healthy for an RN 0.88 + Expo SDK 58 project.
+
+With the default two-ABI build (`npm run apk:debug`), once both ABIs have been
+compiled the warm figure is unchanged: 8 s / 184 MB peak on an otherwise
+up-to-date tree, producing the 97 MB universal Debug APK.
 
 ---
 
@@ -137,7 +147,7 @@ is normal and healthy for an RN 0.88 + Expo SDK 58 project.
 | All files (what Metro crawls) | 55,329 | 70,457 | APJ crawls **more** |
 | `mockup/` | 11 MB, 41 files, **not imported** | — | Negligible |
 | Assets inside the JS export | **1.9 MB** after the sub-path import fix (was 7.9 MB); `assets/` icons (0.5 MB) go through prebuild, not Metro | 244 KB (7 `require`d images live in `assets/` and are prebuild/asset inputs) | Bundle size only |
-| Debug APK | 55 MB — **1 ABI**, 19 `.so` | 137 MB — **4 ABIs**, 184 `.so` | APJ's debug APK is 2.5× bigger |
+| Debug APK | **97 MB — 2 ABIs, 38 `.so`** (one APK for emulator + phone) | 137 MB — **4 ABIs**, 184 `.so` | Both bigger than a single-ABI build, far smaller than 4 ABIs |
 | Release APK | 78 MB (4 ABIs + R8 + baseline profiles) | 64 MB (4 ABIs) | — |
 | JS bundle (Hermes `.hbc`) | **2.5 MB** | **4.38 MB** | Tamil Quran JS is 43 % smaller |
 | `expo export` wall time | **13 s** | **36 s** | **Tamil Quran is 2.8× faster** |
@@ -381,7 +391,7 @@ alongside the project's 3 GB configuration. Two daemons double memory pressure.
 
 | Action | Status |
 |---|---|
-| Build only the emulator's ABI in dev (`reactNativeArchitectures=x86_64`) | **Done** via `plugins/withBuildPerformance.js` |
+| Build two ABIs in dev (`reactNativeArchitectures=x86_64,arm64-v8a`) | **Changed 18 Nov** — superseded the single-ABI default. Owner preference: one Debug APK for emulator **and** phone. Measured: 97 MB, 38 `.so`, **8 s warm** (both ABI caches hot). Only a cold build pays the second C++ pass; the 33 m 46 s session was 4 ABIs *plus* downloads, an emulator and zram swapping. |
 | Cap parallel workers (`org.gradle.workers.max=6`) | **Done** |
 | Gradle build cache (`org.gradle.caching=true`) | **Done** |
 | Gradle heap 3 GB (not 4 GB on a 13 GB machine) | **Done** |
@@ -400,9 +410,10 @@ alongside the project's 3 GB configuration. Two daemons double memory pressure.
 2. **One Gradle daemon.** Point Android Studio's *Gradle JDK* at the same JDK 17
    used by the CLI so Studio and the terminal share a daemon instead of keeping
    two 2–3 GB JVMs alive.
-3. **Physical device builds:** `TAMIL_QURAN_ARCHS="x86_64,arm64-v8a" npx expo prebuild --platform android`
-   (already supported by the plugin), or pass
-   `-PreactNativeArchitectures=arm64-v8a` to a single Gradle invocation.
+3. **One Debug APK for both targets:** `npm run apk:debug` builds
+   `x86_64,arm64-v8a` and `npm run device:install` installs it wherever
+   `ADB_SERIAL` points. `npm run android` still narrows to the attached device's
+   ABI for a faster one-target build and overwrites that APK.
 4. **Release profile:** keep `minify=false` for preview builds; flip to `true`
    only for the store build and accept the extra minutes there.
 5. **Verify with the numbers in this document** (22 s warm Debug; 13 s export).
@@ -424,7 +435,7 @@ alongside the project's 3 GB configuration. Two daemons double memory pressure.
 
 | Change | Benefit | Risk / mitigation |
 |---|---|---|
-| `x86_64`-only dev builds | ~4× less native work | Will not install on a physical ARM device. Mitigate with `TAMIL_QURAN_ARCHS` or a `-P` override for device builds. Never ship an x86_64-only release. |
+| Two-ABI dev builds (`x86_64,arm64-v8a`) | One Debug APK installs on the emulator and the phone; no `-P` juggling, no ABI-mismatch install failures | Clean builds compile the C++ twice. Mitigated by Gradle/CMake caching: measured 8 s warm with both caches hot. Release builds are unaffected here and still carry all four ABIs. |
 | `workers.max=6` | No zram thrashing | Cold builds take slightly longer wall-clock on an otherwise idle 16-core machine. Acceptable trade. |
 | `minify=false` | Faster release builds | Bigger APK, no obfuscation. Must be re-enabled before publishing; the comment in `gradle.properties` says so. |
 | Gradle heap 3 GB | Fits alongside an emulator | Very large multiplatform builds could OOM; this project does not. |
@@ -459,8 +470,9 @@ alongside the project's 3 GB configuration. Two daemons double memory pressure.
    them exactly where they are (docs/agents need them on disk), and when/if EAS
    is configured, add `.easignore` entries so they are not uploaded. Optionally
    add a Metro `blockList` guard later — but it buys nothing today.
-7. **Top five improvements:** (1) keep single-ABI dev builds and set the ABI
-   per target; (2) keep `workers.max=6` + one shared Gradle daemon + no
+7. **Top five improvements:** (1) build both ABIs once so a single Debug APK
+   serves emulator and phone (compile cost is paid only on clean builds);
+   (2) keep `workers.max=6` + one shared Gradle daemon + no
    emulator during clean builds; (3) never rebuild native for JS-only changes,
    and do not run `npm install` casually; (4) keep R8/baseline profiles for
    production releases only; (5) add `.easignore` for reference material when
@@ -483,6 +495,8 @@ alongside the project's 3 GB configuration. Two daemons double memory pressure.
 | `npx expo export --platform android` (Tamil Quran, after sub-path imports) | Pass, **12 s, 3.9 MB, 29 files** (assets 7.9 MB → 1.9 MB) |
 | `npx expo export --platform android` (APJ) | Pass, 36 s, 4.5 MB, 5 files |
 | `./gradlew :app:assembleDebug` (Tamil Quran, warm) | **BUILD SUCCESSFUL in 22 s**, 13 executed / 210 up-to-date |
+| `npm run apk:debug` (two ABIs, warm) | **8 s**, 184 MB peak, 97 MB APK, 38 `.so`, `native-code: 'arm64-v8a' 'x86_64'` |
+| Two-ABI APK install on a device | **Not verified** — no emulator or phone was attached |
 | `./gradlew :app:assembleDebug --dry-run` | 239 tasks, 28 up-to-date |
 | `npm run typecheck` / `npm run lint` (after changes) | Pass, 0 warnings |
 | MD5 mockup vs exported assets | 0 matches |

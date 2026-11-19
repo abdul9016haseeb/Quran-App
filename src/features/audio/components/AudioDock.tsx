@@ -17,6 +17,7 @@ interface AudioDockProps {
   onNext: () => void;
   onPrevious: () => void;
   onOpenReciters: () => void;
+  onClose?: () => void;
 }
 
 /**
@@ -33,6 +34,7 @@ export function AudioDock({
   onNext,
   onPrevious,
   onOpenReciters,
+  onClose,
 }: AudioDockProps) {
   const theme = useAppTheme();
 
@@ -94,7 +96,12 @@ export function AudioDock({
           </AppText>
         </Pressable>
 
-        <IconButton name="play-skip-back" label="முந்தைய வசனம்" onPress={onPrevious} size={17} />
+        <IconButton
+          name="play-skip-back"
+          label="முந்தைய வசனம்"
+          onPress={onPrevious}
+          size={17}
+        />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={isPlaying ? 'இடைநிறுத்து' : 'இயக்கு'}
@@ -117,7 +124,23 @@ export function AudioDock({
             style={{ marginLeft: isPlaying ? 0 : 2 }}
           />
         </Pressable>
-        <IconButton name="play-skip-forward" label="அடுத்த வசனம்" onPress={onNext} size={17} />
+        <IconButton
+          name="play-skip-forward"
+          label="அடுத்த வசனம்"
+          onPress={onNext}
+          size={17}
+        />
+
+        {onClose ? (
+          <IconButton
+            name="close"
+            label="இயக்கியை மூடு"
+            onPress={onClose}
+            size={16}
+            variant="soft"
+            style={{ marginLeft: 4 }}
+          />
+        ) : null}
       </View>
 
       <View style={{ marginTop: 8 }}>

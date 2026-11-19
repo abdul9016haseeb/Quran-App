@@ -1,7 +1,7 @@
 # Requirements — Tamil Quran App
 
-**Version:** 0.1 (UI foundation milestone)
-**Last updated:** 18 November 2026
+**Version:** 0.1 (UI foundation + offline Quran milestone)
+**Last updated:** 19 November 2026
 **Status of this document:** working specification derived from the owner's brief
 and the supplied mockups. Where the owner has not decided something, it is listed
 as an open question rather than assumed.
@@ -18,9 +18,10 @@ Related documents:
 
 Build a Tamil-first Quran app that feels calm, premium and trustworthy: readable
 Tamil, beautiful Arabic, correct prayer information, and (later) recitation and
-recitation feedback. Phase 1 deliberately delivers **only the interface** so the
-visual and interaction direction can be reviewed before content licensing,
-backend work, or AI are funded.
+recitation feedback. The current milestone delivers the interface **plus verified
+offline Quran reading and search** from a bundled database (Tanzil Uthmani +
+QuranEnc `tamil_omar`). Prayer times, Qibla, audio and AI remain unimplemented
+and visibly labelled.
 
 ### 1.1 Audience
 
@@ -52,21 +53,22 @@ backend work, or AI are funded.
 | Theming | Token-based light/dark/system theme |
 | Typography | Bundled Tamil + Arabic fonts; adjustable reader font sizes |
 | Reading UI | Reading modes (both / Arabic / Tamil), per-ayah actions, audio dock (visual only) |
+| Offline data | Bundled SQLite database: 114 surahs, 6,236 ayahs, Arabic + Tamil, FTS5 search |
 | Prayer UI | Today view, tomorrow preview, monthly table, location header, calculation note |
 | Qibla UI | Static compass, sample bearing, explicit sensor caveat |
-| State | In-memory preferences and bookmarks |
+| State | Theme persisted; font sizes, reading mode, reciter and bookmarks in memory |
 | Documentation | Architecture, decisions, workflow, prompts, state tracking |
 | Quality | Typecheck, lint, doctor, Android bundle, emulator run |
 
 ### 2.2 Explicitly out of scope
 
-- Real Quran text or Tamil translation
-- Backend, API, cloud, database, auth, sync
+- Backend, API, cloud, auth, sync
+- Additional databases or persisted state beyond the bundled Quran database and
+  the theme preference
 - Audio playback, audio files, downloads, background audio
 - Location, compass sensors, notifications, permissions
 - AI, speech recognition, Tajweed scoring, microphone
 - Store submission, signing, CI/CD, EAS configuration
-- Persistence of any kind
 - Localisation beyond Tamil-first copy
 
 Adding any of these requires an owner decision recorded in `DECISIONS.md`.
@@ -103,35 +105,38 @@ Numbering is stable; use these IDs in tasks and reviews.
 
 ### 3.3 Quran index
 
-- **FR-20** Lists the available surahs (currently 12) with number, Tamil name,
-  Arabic name, transliteration, meaning, ayah count and revelation place.
+- **FR-20** Lists all 114 surahs with number, Tamil name, Arabic name,
+  transliteration, meaning, ayah count and revelation place.
 - **FR-21** A search field filters the list locally by name/number.
 - **FR-22** Tapping a surah opens the Reader.
-- **FR-23** An inline note states that the complete verified 114-surah dataset is
-  pending.
-- **FR-24** Juz/Page segmented views may show an explanatory empty state rather
-  than fabricated data.
+- **FR-23** An inline note states that all 114 surahs are readable offline with
+  their Arabic and Tamil sources.
+- **FR-24** Juz/Page segmented views show an explanatory empty state rather than
+  fabricated navigation until they are implemented.
 
 ### 3.4 Reader
 
 - **FR-30** Header shows surah number, Tamil name, ayah count and revelation
   place.
 - **FR-31** Each ayah displays Arabic and/or Tamil according to reading mode.
-- **FR-32** Placeholder ayahs render a visible sample badge; the disclosure must
-  not be dismissible into a misleading state.
+- **FR-32** If the database cannot be read, fallback ayahs render a visible
+  sample badge and non-scriptural copy; the disclosure must not be dismissible
+  into a misleading state.
 - **FR-33** Per-ayah actions include bookmark toggle and a share/copy affordance
-  that does not claim to copy real scripture.
+  whose behaviour matches what it actually does.
 - **FR-34** A bottom audio dock shows reciter and playback controls but performs
   no playback and says so.
-- **FR-35** Enough ayahs render to demonstrate scroll behaviour; currently three
-  per surah.
+- **FR-35** All ayahs of the selected surah render from the bundled database.
 - **FR-36** Opening the reader with an unknown surah id fails gracefully.
 
 ### 3.5 Search
 
-- **FR-40** Search accepts surah name, transliteration, Tamil name or number.
-- **FR-41** Results are grouped or labelled clearly and open the Reader.
-- **FR-42** Ayah-text search must not be implied while content is placeholder.
+- **FR-40** Search accepts surah metadata (Tamil name, transliteration, Arabic
+  name, meaning, number) and ayah text in Tamil and Arabic.
+- **FR-41** Surah and ayah results are grouped or labelled clearly and open the
+  Reader.
+- **FR-42** Ayah search runs locally against the bundled FTS5 index; it must not
+  imply network or cloud search.
 - **FR-43** Empty and no-result states are distinct.
 
 ### 3.6 Bookmarks
@@ -183,15 +188,15 @@ Numbering is stable; use these IDs in tasks and reviews.
 - **FR-102** Tamil font size slider within 13–26.
 - **FR-103** Reading mode selector: both / Arabic only / Tamil only.
 - **FR-104** A live preview reflects all four settings.
-- **FR-105** Changes do not survive an app restart (documented).
+- **FR-105** The theme choice survives an app restart; font sizes and reading
+  mode are session-only (documented in the UI).
 
 ### 3.12 About
 
 - **FR-110** States the current milestone and what is not implemented.
-- **FR-111** States that the app licence is undecided and that no repository URL
-  is published.
-- **FR-112** Distinguishes app code, fonts, Quran text, translation and audio as
-  separate rights questions.
+- **FR-111** States the MIT licence and links the public repository URL.
+- **FR-112** Distinguishes app code (MIT), fonts (SIL OFL), Quran text (Tanzil
+  CC BY 3.0), translation (QuranEnc terms) and audio (not bundled).
 - **FR-113** Provides no invented credits, publisher names or permissions.
 
 ---
@@ -223,16 +228,17 @@ Numbering is stable; use these IDs in tasks and reviews.
 ## 5. Content and legal constraints
 
 - **CR-01** Never generate or paraphrase Quranic verses or translations.
-- **CR-02** Placeholder Arabic/Tamil must be clearly non-scriptural and marked.
-- **CR-03** Surah metadata may be factual but must be complete and sourced
-  before release; the current 12-surah subset is a UI convenience.
+- **CR-02** Fallback Arabic/Tamil (used only when the database cannot be read)
+  must be clearly non-scriptural and marked.
+- **CR-03** Surah metadata is complete for 114 surahs and must stay sourced;
+  corrections require a cited reference and a database validation pass.
 - **CR-04** TNTJ Tamil translation is all rights reserved until written
   permission is on file.
 - **CR-05** No audio is bundled or linked until rights are documented.
 - **CR-06** Prayer times must not be presented as authoritative until a method
   and location strategy are approved.
-- **CR-07** Do not add a repository licence, copyright line, or open-source badge
-  without owner instruction.
+- **CR-07** The app code is MIT-licensed by owner decision (19 Nov 2026). Do not
+  change the licence, copyright line, or third-party terms without instruction.
 - **CR-08** Attribution requirements of any future source must be visible in
   About and in the content manifest.
 
@@ -245,13 +251,15 @@ The milestone is complete when all of the following are true:
 1. All screens in §2.1 exist, are reachable, and match the green/white direction.
 2. Light, dark and system themes all render correctly.
 3. Tamil and Arabic text render with bundled fonts at small and large sizes.
-4. Placeholder content is visibly labelled everywhere it appears.
+4. Mock content (prayer, Qibla, audio) is visibly labelled, and any DB fallback
+   is plainly marked as non-Quranic.
 5. Prayer Times and Qibla are separate screens.
 6. Typecheck and lint pass with zero warnings.
 7. `npx expo-doctor` passes.
 8. An Android build launches and every screen can be visited without a crash.
 9. `PROJECT_STATE.md`, `CHANGELOG.md` and this document reflect reality.
-10. No backend, persistence, audio, sensor or AI code has been added.
+10. No backend, audio, sensor or AI code has been added; the only storage is the
+    approved Quran database and the theme preference.
 
 ---
 
@@ -260,13 +268,15 @@ The milestone is complete when all of the following are true:
 These mirror `DECISIONS.md` pending items and must be answered before the next
 milestone:
 
-1. Which Arabic text edition/source, and under what terms?
-2. Which Tamil translation, and is written permission obtained?
+1. ~~Which Arabic text edition/source?~~ Resolved: Tanzil Uthmani, CC BY 3.0
+   (ADR-012). Confirm the exact attribution line for store release.
+2. ~~Which Tamil translation?~~ Resolved: QuranEnc `tamil_omar` (ADR-013).
+   Confirm QuranEnc's redistribution terms for a store build.
 3. Is the app commercial or non-commercial?
 4. Android only, or Android + iOS?
 5. Is cross-device sync wanted, and are accounts acceptable?
 6. Which prayer calculation method and Asr madhab?
 7. Is offline audio required, streamed audio acceptable, or neither yet?
 8. On-device AI, server AI, or defer?
-9. Final app name, identifiers, icon and licence.
+9. Final app name, identifiers and icon (licence resolved: MIT).
 10. Who reviews Quran/translation accuracy before release?

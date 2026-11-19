@@ -1,6 +1,6 @@
 # Architecture Decision Record — Tamil Quran App
 
-**Last updated:** 18 November 2026
+**Last updated:** 19 November 2026
 **Format:** lightweight ADR. Each decision records status, whether the owner has
 approved it, the context, the choice, and what would reverse it.
 
@@ -120,7 +120,8 @@ does not license the app itself or its content.
 
 ## ADR-006 — Mock content only, explicitly and visibly labelled
 
-- **Status:** Accepted
+- **Status:** Superseded by ADR-012, ADR-013 and ADR-014 (19 Nov 2026); kept for
+  history. Placeholder copy now exists only as a database-read fallback.
 - **user-approved:** yes (brief: never fabricate Quranic verses/translations)
 - **Date:** 18 Nov 2026
 
@@ -143,7 +144,7 @@ are recorded as approved decisions. See pending decisions P-01 and P-02.
 
 ## ADR-007 — Preferences and bookmarks live in memory only
 
-- **Status:** Accepted (current milestone)
+- **Status:** Superseded in part by ADR-015 (theme preference only)
 - **user-approved:** partial (UI-first, no database)
 - **Date:** 18 Nov 2026
 
@@ -161,7 +162,8 @@ without changing screens.
 
 ## ADR-008 — No backend, database, auth, audio engine, sensors or AI in this phase
 
-- **Status:** Accepted
+- **Status:** Superseded in part by ADR-014 (bundled read-only database). No
+  backend, auth, audio, sensors or AI were added.
 - **user-approved:** yes (brief: UI-first; no backend/database/auth/audio/AI)
 - **Date:** 18 Nov 2026
 
@@ -218,7 +220,7 @@ data layer can replace `src/data/mock` without touching feature folders.
 
 ## ADR-011 — Placeholder app identifiers, no repository or licence claim
 
-- **Status:** Accepted provisionally
+- **Status:** Superseded by ADR-016 (MIT licence and public repository)
 - **user-approved:** no
 - **Date:** 18 Nov 2026
 
@@ -231,22 +233,92 @@ submission. No `LICENSE` file exists. Do not publish or claim open source.
 
 ---
 
+## ADR-012 — Offline Arabic Quran text: Tanzil Project (Uthmani)
+
+- **Status:** Accepted
+- **user-approved:** yes (owner confirmed Tanzil Uthmani text)
+- **Date:** 18 Nov 2026
+
+**Decision.** Use Tanzil Project Uthmani Quran text (Version 1.1) covering all 114
+Surahs and 6,236 Ayahs. Retain exact Uthmani diacritics and Harakat. License:
+Creative Commons Attribution 3.0. Attribution documented in constants and UI.
+
+---
+
+## ADR-013 — Offline Tamil translation: Shaykh Omar Sharif ibn Abdussalam (QuranEnc)
+
+- **Status:** Accepted
+- **user-approved:** yes (owner confirmed QuranEnc `tamil_omar`)
+- **Date:** 18 Nov 2026
+
+**Decision.** Use the complete 114-Surah (6,236 Ayah) Tamil translation by
+Shaykh Omar Sharif ibn Abdussalam sourced from QuranEnc.com. TNTJ / PJ translation
+is explicitly excluded. Attribution documented in constants and UI.
+
+---
+
+## ADR-014 — Bundled SQLite database with FTS5 search via expo-sqlite
+
+- **Status:** Accepted
+- **user-approved:** partial (owner requested complete offline reading)
+- **Date:** 18 Nov 2026
+
+**Decision.** Bundle a 13.5 MB SQLite database at `assets/quran.db` loaded via
+`expo-sqlite` and `metro.config.js`. Contains `surahs`, `ayahs`, and `ayahs_search`
+(FTS5) for instant offline reading and full-text search with zero network calls.
+
+---
+
+## ADR-015 — Persist only the theme preference, in SQLite
+
+- **Status:** Accepted
+- **user-approved:** partial (theme persistence was requested; the storage choice
+  is reversible)
+- **Date:** 19 Nov 2026
+
+**Decision.** `user_preferences.db` stores a single `theme_preference` row
+through `src/services/storage/preferencesStorage.ts`. Font sizes, reading mode,
+reciter selection, bookmarks and reading position remain React state.
+
+**Consequences.** The theme survives a restart with no flash. Everything else
+resets, and the UI says so. Do not add further keys without resolving P-08.
+
+---
+
+## ADR-016 — MIT licence and public repository
+
+- **Status:** Accepted
+- **user-approved:** yes (owner confirmed MIT as authoritative, 19 Nov 2026)
+- **Date:** 19 Nov 2026
+
+**Decision.** App source code is licensed **MIT**, copyright (c) 2026 Abdul
+Haseeb, at `https://github.com/abdul9016haseeb/Quran-App`. The `LICENSE` file
+lives on `develop`/`main`.
+
+**Consequences.** Supersedes ADR-011. Documentation, README and About must state
+MIT and may link the repository. The licence covers code only: Tanzil Arabic
+(CC BY 3.0), the QuranEnc `tamil_omar` translation, fonts (SIL OFL) and any
+future audio keep their own terms.
+
+---
+
 ## Pending owner decisions
 
-These are **not decided** and must not be treated as settled by any document or
-UI copy. `user-approved: no` applies to all rows.
+Rows marked **RESOLVED** are settled and link to their ADR. Every other row is
+**not decided**, must not be treated as settled by any document or UI copy, and
+carries `user-approved: no`.
 
 | ID | Decision | Why it is blocked | What unblocks it |
 |---|---|---|---|
-| P-01 | Arabic Quran text edition and source | Redistribution terms and exact edition not verified | Written terms review; pin edition/version; checksum plan |
-| P-02 | Tamil translation edition | TNTJ permission absent; other editions unverified | Written permission or a verified licensed edition |
+| P-01 | Arabic Quran text edition and source | **RESOLVED (18 Nov 2026)** | Tanzil Uthmani (CC BY 3.0) adopted in ADR-012 |
+| P-02 | Tamil translation edition | **RESOLVED (18 Nov 2026)** | QuranEnc Omar Sharif adopted in ADR-013 |
 | P-03 | Recitation audio provider and rights | EveryAyah/Quran Foundation terms unverified; download rights unknown | Documented licence + coverage test |
 | P-04 | Backend: none vs Supabase vs Supabase + Node | No sync/accounts requirement confirmed; Quran Foundation OAuth needs a confidential client | Owner product decision |
 | P-05 | Accounts and cross-device sync | Not requested | Owner decision |
-| P-06 | Offline scope (reader / + audio / + AI) | Depends on P-01…P-03, P-10 | Content and audio decisions |
+| P-06 | Offline reading scope | **RESOLVED (18 Nov 2026)** | 100% offline text & translation in bundled SQLite (ADR-014) |
 | P-07 | Prayer calculation method and Asr madhab | Local mosque practice varies | Owner/locale decision; comparison with AlAdhan |
-| P-08 | Persistence for bookmarks/progress | Not in UI milestone | Owner approves storage scope |
-| P-09 | App licence and public repository | Owner has not chosen | Explicit owner instruction |
+| P-08 | Persistence for bookmarks/progress | Theme is stored (ADR-015); the rest is not | Owner approves storage scope |
+| P-09 | App licence and public repository | **RESOLVED (19 Nov 2026)** | MIT licence, public GitHub repository (ADR-016) |
 | P-10 | AI execution model (on-device/server/hybrid) | No measured POC | Benchmark on target hardware |
 | P-11 | Platform scope (Android only vs Android + iOS) | Not stated | Owner decision |
 | P-12 | Commercial vs non-commercial intent | Changes Tanzil and translation options | Owner decision |

@@ -93,10 +93,10 @@ export function SettingsScreen() {
           </View>
           <View style={{ flex: 1 }}>
             <AppText variant="subheading" style={{ fontSize: 13 }}>
-              UI முதல் கட்டம்
+              ஆஃப்லைன் வாசிப்பு தயார்
             </AppText>
             <AppText variant="caption" style={{ fontSize: 9 }}>
-              பின்னணி, கணக்கு மற்றும் சேமிப்பு இன்னும் இல்லை
+              பின்னணி, கணக்கு மற்றும் ஒத்திசைவு இன்னும் இல்லை
             </AppText>
           </View>
           <View
@@ -198,8 +198,8 @@ export function SettingsScreen() {
           <SettingRow
             icon="server-outline"
             title="ஆஃப்லைன் தரவு"
-            subtitle="குர்ஆன் உரை, மொழிபெயர்ப்பு"
-            value="இன்னும் இல்லை"
+            subtitle="114 அத்தியாயங்கள் · 6,236 வசனங்கள்"
+            value="தயார்"
             showChevron={false}
           />
           <Divider />
@@ -233,8 +233,8 @@ export function SettingsScreen() {
           align="center"
           style={{ marginTop: theme.spacing.xl, fontSize: 10, lineHeight: 16 }}
         >
-          அமைப்புகள் இந்த அமர்வில் மட்டுமே நிலைத்திருக்கும். சாதனச் சேமிப்பு
-          அடுத்த கட்டத்தில் இணைக்கப்படும்.
+          தோற்றம் சாதனத்தில் சேமிக்கப்படுகிறது. எழுத்துரு அளவு, வாசிப்பு முறை,
+          ஓதுபவர் மற்றும் குறிப்புகள் இந்த அமர்வில் மட்டுமே நிலைத்திருக்கும்.
         </AppText>
       </ScrollView>
     </Screen>
