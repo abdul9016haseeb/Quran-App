@@ -194,7 +194,9 @@ understand → change one thing → typecheck → lint → run on device → ins
 3. **Typecheck:** `npm run typecheck`.
 4. **Lint:** `npm run lint`. Zero warnings is the bar.
 5. **Run** on Android; visit every screen you touched.
-6. **Inspect** light mode, dark mode, and a narrow width (≈320 dp).
+6. **Inspect** light mode, dark mode, and a narrow width (≈320 dp). Compare
+   against the matching reference in `mockup/stitch_redesign/` and save real
+   captures per `AGENTS.md` §7 (`UI Visual Verification`).
 7. **Update docs:** `PROJECT_STATE.md` if capability changed, `CHANGELOG.md`
    always, `SCREEN_SPEC.md` if behaviour changed.
 8. **Report**: what is real, what is mocked, what is still blocked.

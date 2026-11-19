@@ -25,6 +25,12 @@ internal milestones, not public releases.
 
 ### Added
 
+- UI visual verification workflow: `mockup/development_screenshots/` with
+  `latest/` and `history/` for real app captures, a local `README.md`, and an
+  `AGENTS.md` §7 section covering reference matching, comparison criteria,
+  capture commands and screenshot naming. No application UI or behaviour
+  changed. Current captures cover the Home tab, the surah reader in light and
+  dark mode, and the reader at 320 dp width.
 - Complete offline SQLite database (`assets/quran.db`) bundled into native assets:
   - Complete Tanzil Uthmani Arabic Quran text (all 114 Surahs, 6,236 Ayahs, CC BY 3.0 Tanzil Project).
   - Complete Tamil translation by Shaykh Omar Sharif ibn Abdussalam (`tamil_omar`, QuranEnc.com).

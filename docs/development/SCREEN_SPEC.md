@@ -158,13 +158,16 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 2. All ayahs of the selected surah, read from the bundled SQLite database. If
    the database cannot be read, three non-Quranic fallback ayahs render with the
    sample badge **[FALLBACK]**.
-3. Each `AyahCard`:
+3. Verses render as a continuous reading column, with no per-verse card
+   background, border, shadow or rounded container. Each verse block has:
    - ayah number medallion,
    - Arabic text (Amiri, user size, RTL),
-   - Tamil text (Noto Sans Tamil, user size),
+   - Tamil text (Noto Sans Tamil, user size) directly below the Arabic,
    - sample badge when `isPlaceholder`,
    - actions: play (visual), bookmark, copy/share (visual).
-4. Active ayah is highlighted when the audio dock targets it.
+   A hairline divider separates consecutive verses.
+4. The active ayah's number medallion turns gold and its play control becomes
+   pause when the audio dock targets it.
 
 ### Audio dock (visual only)
 

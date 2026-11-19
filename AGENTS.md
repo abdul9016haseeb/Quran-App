@@ -182,7 +182,8 @@ src/services/storage/       theme preference storage
 src/types/content.ts        shared domain types
 assets/quran.db             bundled offline Quran dataset (14 MB)
 scripts/                    dataset fetch + database build/validation
-mockup/                     preserved visual references (do not edit)
+mockup/                     preserved visual references and our own captures
+mockup/development_screenshots/  real app captures (latest/, history/)
 docs/architecture/          evaluation, decisions, source material
 docs/development/           workflow, plan, testing, screen spec
 prompts/                    task prompts for AI agents
@@ -230,10 +231,112 @@ body you propose before running it.
 
 ---
 
-## 7. When you finish a task
+## 7. UI Visual Verification
+
+UI changes are judged against two sources: the preserved design references in
+`mockup/` and real captures of the running app in
+`mockup/development_screenshots/`. Neither replaces actually running the app.
+
+`mockup/development_screenshots/latest/` holds current captures;
+`history/` holds dated captures kept for an intentional before/after comparison.
+These directories are for our own screenshots only — never put mockups,
+generated images or placeholders in them.
+
+### 7.1 Before changing UI
+
+1. Inspect the matching reference screen in `mockup/stitch_redesign/<screen>/`
+   (`screen.png`; read `code.html` for exact sizing and colour values). The
+   `mockup/original/` TNTJ-style screenshots remain the primary identity
+   reference per §4.4; `mockup/stitch_redesign/` is secondary.
+2. Inspect the latest real capture in
+   `mockup/development_screenshots/latest/`, when one exists for that screen.
+3. Compare the implementation, the reference and the latest capture across:
+   typography (family, size, weight, line height, Tamil/Arabic shaping), spacing,
+   alignment, component sizing, colours (tokens vs rendered), visual hierarchy,
+   scrolling, clipping/overflow, and responsiveness (320 dp and the target
+   device).
+4. A reference is never permission to remove or weaken functionality, labels,
+   disclosures, accessibility behaviour or placeholder badges. If a mockup lacks
+   a real feature, keep the feature and adapt its visual treatment.
+
+### 7.2 After changing UI
+
+5. Run the app (`npm start` plus `npm run android`, or an installed debug build)
+   and inspect the affected screens in light and dark mode, including a narrow
+   (~320 dp) layout.
+6. Capture updated screenshots into `latest/` using the naming convention in
+   §7.4.
+7. Before replacing a capture you care about, copy the old file into `history/`
+   with a dated, labelled name — only when the before/after comparison is
+   meaningful.
+8. Never invent screenshot results, claim a screen was inspected when it was
+   not, or alter a capture to make the UI look better.
+9. If screenshots cannot be captured (no device/emulator, app crash, Expo Go or
+   environment limitation), state the limitation explicitly and give the exact
+   manual capture steps you would use.
+
+### 7.3 Which reference belongs to which screen
+
+Reference directories that actually exist:
+
+| App screen | Route | Reference(s) |
+|---|---|---|
+| Home | `Home` tab | `home_dashboard/screen.png` |
+| Quran / Surah index | `Quran` tab | `surah_index/screen.png` |
+| Surah reader | `SurahReader` | `arabic_typography/screen.png` — typography only; there is no full reader-layout reference |
+| Prayer times | `Prayer` tab | `prayer_times/screen.png`; also `prayer_times_qibla/screen.png` |
+| Qibla | `Qibla` | `qibla_compass/screen.png`; also `prayer_times_qibla/screen.png` |
+| Settings | `Settings` tab | `settings/screen.png` |
+| Appearance & reading | `Appearance` | `appearance_themes/screen.png` and `reading_preferences/screen.png` |
+
+`serene_devotional_manuscript/DESIGN.md` is a style brief, not a screen.
+`mockup/original/`, `mockup/legacy_reference/` and `Mock_ui_20.zip` are archival.
+
+There is **no** matching reference for Search, Bookmarks, the Reciter picker or
+About. For those, verify against the design tokens, the nearest existing screen
+and the rules above, and say "no reference exists" instead of inventing one. Do
+not assume every screen has a reference.
+
+### 7.4 Capturing screenshots
+
+Automatic capture works on the Android emulator with `adb`:
+
+```bash
+adb devices -l                    # confirm the target is attached
+adb shell wm size                 # capture size, e.g. Physical size: 1080x2400
+adb exec-out screencap -p > mockup/development_screenshots/latest/home__light__1080x2400__2026-11-19.png
+```
+
+When an emulator and a phone are attached, target one explicitly with
+`adb -s "$ADB_SERIAL"`; the project scripts also honour `ADB_SERIAL` or adb's
+`ANDROID_SERIAL`. Capture a full-resolution PNG; do not crop, scale or annotate.
+If the app is not running, start it first (`npm run android`, or install an APK
+with `npm run apk:debug && npm run device:install`).
+
+Manual fallback: navigate the app on the device, then use the emulator's camera
+button or `adb exec-out screencap -p > <file>.png`. Record device model, Android
+version, theme and screen in the report.
+
+Naming:
+
+- Current: `<screen>__<theme>__<W>x<H>__<YYYY-MM-DD>.png` —
+  e.g. `home__light__1080x2400__2026-11-19.png`
+- History: `<YYYY-MM-DD>__<screen>__<theme>__<W>x<H>__<label>.png` —
+  e.g. `2026-11-19__home__light__1080x2400__before-header-spacing.png`
+
+`<screen>` uses lowercase ASCII tokens: `home`, `surah_index`, `surah_reader`,
+`search`, `bookmarks`, `prayer_times`, `qibla`, `settings`, `appearance`,
+`reciter_picker`, `about`. `<theme>` is `light` or `dark` (the resolved theme,
+not `system`). `<W>x<H>` is the pixel size reported by the capture. Use `__`
+between fields and `-` inside a field; avoid spaces and non-ASCII characters.
+
+---
+
+## 8. When you finish a task
 
 1. Run typecheck and lint.
-2. Launch the affected screens and check light/dark plus a small-screen layout.
+2. Launch the affected screens and check light/dark plus a small-screen layout;
+   capture them per §7.
 3. Update `PROJECT_STATE.md` if capabilities changed.
 4. Update `CHANGELOG.md` under `[Unreleased]`.
 5. Report what is real, what is mocked, and what is still blocked.
