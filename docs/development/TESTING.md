@@ -1,11 +1,11 @@
 # Testing and QA — Tamil Quran App
 
-**Last updated:** 18 November 2026
-**Applies to:** Phase 0 (UI foundation)
+**Last updated:** 19 November 2026
+**Applies to:** Phase 0 UI + Phase 1 offline Quran content
 
 There is no automated test suite yet. This document defines the manual and
-tooling checks that gate a change, plus the future test plan once real content
-and data layers exist.
+tooling checks that gate a change, plus the test plan for the data layer that now
+exists.
 
 ---
 
@@ -56,9 +56,9 @@ Run after any navigation, theme or component change.
 | 4 | Quick action: Search | Search screen opens, back returns to Home |
 | 5 | Quick action: Qibla | Separate Qibla screen + caveat copy |
 | 6 | Quick action: Bookmarks | List or empty state; back works |
-| 7 | Quran tab | 12 surah rows, notice about full dataset |
+| 7 | Quran tab | 114 surah rows and the offline-source notice |
 | 8 | Search "பகரா" / "2" | Al-Baqarah row appears; tap opens reader |
-| 9 | Reader | Header, reading modes, 3 ayahs, sample badges |
+| 9 | Reader | Header, reading modes, all DB ayahs, source note (no sample badge) |
 | 10 | Reader mode Arabic-only | Tamil hidden, Arabic RTL, no layout jump |
 | 11 | Reader mode Tamil-only | Arabic hidden, line height intact |
 | 12 | Reader bookmark | Icon fills; entry appears in Bookmarks |
@@ -68,7 +68,7 @@ Run after any navigation, theme or component change.
 | 16 | Settings | All rows navigate or explain; reset works |
 | 17 | Appearance | Theme, sizes, mode, live preview |
 | 18 | Reciter picker | Selection reflected in reader dock |
-| 19 | About | Milestone status, licence undecided, no fake links |
+| 19 | About | Milestone status, MIT licence, repo link, source attribution |
 | 20 | Android back | Predictable at every level; no empty stack |
 
 ---
@@ -100,16 +100,16 @@ Run after any navigation, theme or component change.
 
 ## 6. Content integrity checks
 
-These are release blockers once real content exists; in Phase 0 they verify that
-nothing *pretends* to be real.
+These verify that real scripture is intact and that mock UI is still labelled.
 
-- [ ] Every ayah on screen carries `isPlaceholder: true`.
-- [ ] The sample badge and long disclosure are visible in the reader.
-- [ ] No surah beyond the documented 12 appears.
+- [ ] `assets/quran.db` opens and contains 114 surahs / 6,236 ayahs.
+- [ ] No empty Arabic or Tamil fields; `(surah, ayah)` is unique.
+- [ ] DB ayahs show no sample badge; the fallback path does.
+- [ ] Tanzil (CC BY 3.0) and QuranEnc attribution is visible in the reader/About.
 - [ ] Prayer times are described as illustrative.
 - [ ] Qibla bearing is described as a sample.
 - [ ] Reciter rows state that audio is unavailable.
-- [ ] About states that the licence is undecided.
+- [ ] About states MIT and links the repository.
 - [ ] No network request is made (verify with device network inspector).
 
 ---
@@ -129,7 +129,7 @@ measurement.
 
 ## 8. Future automated test plan
 
-When Phase 1 begins:
+Now that the Phase 1 data layer exists:
 
 1. **Unit tests** (Jest + React Native Testing Library)
    - repository mapping and validation,

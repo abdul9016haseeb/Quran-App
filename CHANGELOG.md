@@ -2,10 +2,21 @@
 
 All notable changes to this project are recorded here.
 
-This project does **not** yet follow a published release process and has no
-licence. Version numbers describe internal milestones, not public releases.
+This project does not yet follow a published release process. The source code is
+licensed MIT (see `LICENSE` on `develop`/`main`). Version numbers describe
+internal milestones, not public releases.
 
 ## [Unreleased]
+
+### Changed
+
+- Reconciled documentation and in-app status copy with the bundled offline Quran
+  database and the owner-confirmed MIT licence: `About`, `Settings`, `Home`,
+  `Appearance`, `Bookmarks` and the reader footer no longer claim that Quran
+  text, translation or offline data are missing.
+- Home and Quran-index "continue reading" cards are now labelled as sample
+  targets; the incorrect "பாகம் 30" became "பாகம் 3" (2:255 is juz 3) and the
+  fake `42%` progress was removed.
 
 ### Fixed
 
@@ -66,8 +77,9 @@ licence. Version numbers describe internal milestones, not public releases.
 - Static Qibla compass with sample bearing and an explicit sensor caveat.
 - In-memory preferences provider for theme, font sizes, reading mode, reciter
   and bookmarks.
-- Mock data modules with `MOCK DATA` documentation: surah metadata (first 12
-  surahs), non-Quranic placeholder ayahs, prayer times, reciters and bookmarks.
+- Mock data modules with `MOCK DATA` documentation: surah metadata (initially
+  the first 12; later replaced by the 114-surah canonical index), non-Quranic
+  fallback ayahs, prayer times, reciters and bookmarks.
 - Visible placeholder disclosures (`மாதிரித் தரவு`) wherever mock content could
   be mistaken for live data.
 - Preserved design references under `mockup/original/`,
@@ -89,7 +101,7 @@ licence. Version numbers describe internal milestones, not public releases.
 
 - Replaced the generated Expo template screen with the project navigator.
 - Limited surah metadata to the first 12 surahs instead of extending it from
-  memory; the UI states that the verified dataset is pending.
+  memory (later replaced by the full 114-surah canonical index).
 - Prayer notification card now shows a disabled toggle with
   "இன்னும் இயக்கப்படவில்லை" and states that sound, alarms and battery
   permissions are mock-only. Removed the misleading "enabled/alarm" status.
@@ -108,9 +120,8 @@ licence. Version numbers describe internal milestones, not public releases.
 
 ### Removed
 
-- Generated template example content and the template `LICENSE` file. No
-  licence has been chosen; see `docs/architecture/DECISIONS.md`.
-- The auto-generated template commit; the repository currently has no commits.
+- Generated template example content. The template `LICENSE` was removed while
+  the project had no licence; MIT was later adopted by owner decision (ADR-016).
 
 ### Verified
 
@@ -118,6 +129,10 @@ licence. Version numbers describe internal milestones, not public releases.
 - `npm run lint` passes with zero warnings.
 - `npx expo export --platform android` bundles successfully.
 - `npx expo-doctor` reports all checks passing.
+- Re-verified 19 Nov 2026: typecheck, lint (0 warnings), doctor (20/20) and
+  `npx expo export --platform android` pass; the export contains the exact
+  14,192,640-byte `quran.db` asset. No device was attached, so runtime checks
+  were not re-run.
 - Warm Android Debug build completes in 22 s (`BUILD SUCCESSFUL`, 13 of 223
   tasks executed); see `docs/performance/BUILD_PERFORMANCE_ANALYSIS.md`.
 - Native Android build installed and launched on an Android 14 emulator.
@@ -127,10 +142,16 @@ licence. Version numbers describe internal milestones, not public releases.
 
 ### Known limitations
 
-- No real Quran text or Tamil translation; all ayah content is labelled
-  placeholder copy.
-- No persistence: preferences and bookmarks reset when the app restarts.
-- No network, backend, accounts, sync or database.
+- Bookmark, reading-position, font-size and reading-mode persistence is not
+  implemented; only the theme preference survives a restart.
+- Unvocalized Arabic search returns no rows (the FTS index preserves diacritics).
+- Search and bookmark links open the reader at ayah 1 instead of the target ayah.
+- An updated `quran.db` may not replace an already-installed copy because
+  `SQLiteProvider` defaults to `forceOverwrite=false`.
+- The database build lacks a committed manifest/checksum and is not fully
+  reproducible (`scripts/data/quran_info.json` is git-ignored).
+- No network, backend, accounts or sync; the Quran database is bundled and
+  read-only.
 - No audio playback, downloads or background audio.
 - No location, compass sensors, notifications or permissions.
 - Prayer times and Qibla bearing are illustrative values, not valid guidance.

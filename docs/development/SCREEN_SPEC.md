@@ -1,7 +1,7 @@
 # Screen Specification — Tamil Quran App
 
-**Version:** 0.1 (UI foundation)
-**Last updated:** 18 November 2026
+**Version:** 0.1 (UI foundation + offline Quran)
+**Last updated:** 19 November 2026
 
 This document describes what each screen does **today**, including honest
 limitations. It is a build/QA reference, not a design wishlist. Where behaviour
@@ -23,7 +23,8 @@ Visual source: `mockup/original/` (primary), `mockup/stitch_redesign/` (secondar
    Tamil (400/600/700) through `expo-font`.
 2. While loading, shows a deep-green splash with the Arabic word القرآن, the
    Tamil app name, and a gold spinner.
-3. Then mounts `SafeAreaProvider` → `PreferencesProvider` → `RootNavigator`.
+3. Then mounts `SafeAreaProvider` → `PreferencesProvider` → `Suspense` →
+   `SQLiteProvider` (bundled `quran.db`) → `RootNavigator`.
 
 **Rules:** no screen may render before fonts are ready. Do not add a second font
 loading path.
@@ -51,7 +52,8 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 - `PreferencesProvider` resolves `system | light | dark` using `useColorScheme`.
 - Every screen reads colours from `useAppTheme()`.
 - Status bar style is set per screen; dark mode uses light content.
-- **[NOT IMPLEMENTED]** Theme choice is not persisted.
+- The theme choice **is** persisted in `user_preferences.db`. Font sizes,
+  reading mode, reciter and bookmarks are session-only.
 
 ### 0.4 Reusable primitives
 
@@ -85,8 +87,9 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
    - Arabic app name in gold, Latin wordmark, Tamil app name, tagline.
    - Greeting line and date/location context.
    - Header actions: Qibla, theme toggle, Settings.
-2. **Continue reading card** — overlaps the hero; surah 2, ayah 255 sample
-   target; tapping opens `SurahReader`.
+2. **Continue reading card** — overlaps the hero; labelled as a sample target
+   (surah 2, ayah 255, juz 3); tapping opens `SurahReader`. Real reading
+   position is not tracked yet.
 3. **Next prayer card** — prayer name, sample time, location, minutes remaining,
    progress bar; tapping opens the Prayer tab.
 4. **Quick actions** — Search, Qibla, Bookmarks.
@@ -96,7 +99,8 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 
 ### Behaviour
 
-- Theme toggle cycles the in-memory preference (system → light → dark → system).
+- Theme toggle cycles the preference (system → light → dark → system) and saves
+  it to SQLite; the other preferences stay in memory.
 - Pull-to-refresh is not implemented; a local `refreshed` flag drives a small
   visual acknowledgement only. **[MOCK]**
 - No network calls.
@@ -120,8 +124,8 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 3. Search field filtering the surah list locally.
 4. Surah rows: number badge, Tamil name, transliteration, Arabic name, meaning,
    ayah count, revelation place.
-5. Inline notice: only the first 12 surahs are included; verified full dataset
-   pending.
+5. Inline notice: all 114 surahs are readable offline from Tanzil Uthmani Arabic
+   and the QuranEnc `tamil_omar` Tamil translation.
 
 ### Behaviour
 
@@ -132,15 +136,16 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 
 ### Constraints
 
-- Do not add surahs from memory.
-- Do not show a fake 114 count.
+- Surah metadata comes from `src/data/canonicalSurahs.ts` (all 114); do not edit
+  it from memory.
+- Juz/page columns exist in the DB, but their UI is not built yet.
 
 ---
 
 ## 3. Surah reader
 
 **File:** `src/features/quran/SurahReaderScreen.tsx`
-**Route:** `SurahReader { surahId }`
+**Route:** `SurahReader { surahId }` — no target-ayah parameter yet
 
 ### Header
 
@@ -150,7 +155,9 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 ### Body
 
 1. Reading-mode segmented control: both / Arabic / Tamil.
-2. Three sample ayahs for the selected surah **[MOCK]**.
+2. All ayahs of the selected surah, read from the bundled SQLite database. If
+   the database cannot be read, three non-Quranic fallback ayahs render with the
+   sample badge **[FALLBACK]**.
 3. Each `AyahCard`:
    - ayah number medallion,
    - Arabic text (Amiri, user size, RTL),
@@ -195,9 +202,11 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 
 ### Behaviour
 
-- Matches surah metadata only (name, transliteration, number).
-- **[NOT IMPLEMENTED]** Full-text ayah search; it would be misleading while the
-  text is placeholder.
+- Matches surah metadata (Tamil name, transliteration, meaning, Arabic name,
+  number) and ayah text through the bundled FTS5 index.
+- Tamil search works. Unvocalized Arabic queries currently return nothing because
+  the index preserves diacritics (PROJECT_STATE K-14).
+- Ayah results open the reader at ayah 1, not the matched verse (K-15).
 - No search history, no debounce needed at this dataset size.
 
 ---
@@ -325,7 +334,8 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 - Appearance → `Appearance`; Reciter → `ReciterPicker`; About → `About`.
 - Reset restores theme/fonts/mode/reciter/initial bookmarks.
 - Notification row must not toggle anything real; label it as pending.
-- **[NOT IMPLEMENTED]** Language switching, accounts, storage, sync.
+- **[NOT IMPLEMENTED]** Language switching, accounts, sync. Only the theme is
+  stored; bookmarks and the remaining preferences are session-only.
 
 ---
 
@@ -342,13 +352,14 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 4. Tamil font size: minus/plus controls, 13–26.
 5. Reading mode: both / Arabic / Tamil.
 6. Live preview card using current settings.
-7. Note that settings reset on restart.
+7. Note that the theme persists but sizes and mode reset on restart.
 
 ### Behaviour
 
 - All controls write to `PreferencesProvider`; changes are instant.
 - Values are clamped at the provider level, not just in the UI.
-- **[NOT IMPLEMENTED]** Persistence, per-surah overrides, font family choice.
+- **[PARTIAL]** The theme is persisted; font sizes and reading mode are not.
+- **[NOT IMPLEMENTED]** Per-surah overrides and font family choice.
 
 ### QA notes
 
@@ -365,11 +376,11 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 ### Layout
 
 - App identity block (Arabic/Tamil/Latin names, version).
-- Milestone statement: UI foundation, no backend/audio/AI.
+- Milestone statement: offline reading/search delivered; no backend/audio/AI.
 - Status list: what works / what is mocked / what is blocked.
-- Rights section: app licence undecided; fonts are third-party; Quran text,
-  translation and audio are separate, unresolved rights.
-- No repository link, no invented publisher, no "open source" claim.
+- Rights section: app code is MIT; fonts are SIL OFL; Arabic is Tanzil CC BY 3.0;
+  Tamil is QuranEnc `tamil_omar`; audio is not bundled.
+- Repository link is shown; no invented publisher or permission claim.
 
 ### Behaviour
 
@@ -387,6 +398,7 @@ Tab bar height is `62 + bottom inset`; labels use Noto Sans Tamil 10sp.
 | No search results | Icon + "முடிவுகள் இல்லை" + suggestion |
 | No bookmarks | Icon + explanation that bookmarks are session-only |
 | Unknown surah id | Fall back to first surah, never crash |
+| Quran DB unavailable | Reader shows non-Quranic fallback ayahs with the sample badge |
 | Juz/Page tabs | Explanatory empty state, no invented data |
 | Audio unavailable | Disabled-looking controls + explicit copy |
 | Missing network | Not applicable: no network is used |

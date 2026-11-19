@@ -17,11 +17,14 @@ If a request conflicts with `requirements.md` or an owner decision in
 
 ## 1. Project in one paragraph
 
-A Tamil-first Quran mobile app. The current milestone is a **UI foundation only**:
-a complete, polished, typed React Native interface with realistic navigation and
-interaction. There is no backend, no database, no auth, no audio engine, no
-sensor integration and no AI. All Quran/translation content on screen is
-**explicitly labelled placeholder** and is deliberately non-Quranic sample text.
+A Tamil-first Quran mobile app. The current milestone adds **verified offline
+reading** on top of the UI foundation: a polished, typed React Native interface
+backed by a bundled SQLite database containing Tanzil Uthmani Arabic and the
+QuranEnc `tamil_omar` Tamil translation for all 114 surahs (6,236 ayahs), plus
+offline FTS5 search. There is still no backend, auth, audio playback, location or
+sensor integration and no AI. Prayer times, Qibla and the audio dock remain
+explicitly labelled mock UI; the reader falls back to labelled placeholder text
+only if the database cannot be read.
 
 **Never invent Quranic verses, Tamil translations, hadith, or scholarly claims.**
 Never present mock data as if a service produced it.
@@ -39,6 +42,7 @@ Never present mock data as if a service produced it.
 | Navigation | React Navigation: `native`, `native-stack`, `bottom-tabs` | v7 |
 | Fonts | `expo-font` + `@expo-google-fonts/*` | bundled |
 | Icons | `@expo/vector-icons` (Ionicons) | bundled |
+| Offline data | `expo-sqlite` + bundled `assets/quran.db` | 58.0.18 |
 
 Rationale and alternatives: `docs/architecture/TECHNOLOGY_EVALUATION.md`.
 This is a **React Navigation** project, not Expo Router. `src/app/` is an
@@ -84,32 +88,45 @@ explicitly).
 
 ### 4.1 Content integrity
 
-- All displayed Quran text and Tamil translation currently comes from
-  `src/data/mock/sampleAyahs.ts` and is **non-Quranic placeholder copy**.
-- Every placeholder ayah carries `isPlaceholder: true` and must render the
-  `SampleBadge` / `SAMPLE_DATA_LONG` disclosure.
-- Never extend `MOCK_SURAHS` from memory. It contains factual metadata for the
-  first 12 surahs only; the full verified 114-surah dataset is pending.
+- Displayed Quran text and Tamil translation come from the bundled
+  `assets/quran.db` (Tanzil Uthmani + QuranEnc `tamil_omar`). Treat that file as
+  the single source of truth: never retype, "fix" or paraphrase its text in code.
+- `src/data/mock/sampleAyahs.ts` is a **fallback only**, used when the database
+  cannot be read. Every placeholder ayah carries `isPlaceholder: true` and must
+  render the `SampleBadge` / `SAMPLE_DATA_LONG` disclosure.
+- `src/data/canonicalSurahs.ts` contains factual metadata for all 114 surahs.
+  Never extend or edit it from memory; corrections need a cited source and a
+  database validation pass.
 - Never remove or weaken a placeholder badge to make a screen look "finished".
-- Do not add real scripture, translation text, or audio URLs without an owner
-  decision recorded in `docs/architecture/DECISIONS.md`.
+- Rebuild `assets/quran.db` through `scripts/` (see `WORKFLOW.md`), never by
+  hand-editing the binary. Record source, version, checksum and attribution.
+- Do not add audio URLs, a different translation, or other scripture without an
+  owner decision recorded in `docs/architecture/DECISIONS.md`.
 
 ### 4.2 Licensing
 
-- No licence has been chosen for this repository. Do not add a `LICENSE` file,
-  SPDX identifier, or open-source claim.
+- The repository is licensed **MIT** (owner decision, 19 Nov 2026). The `LICENSE`
+  file lives on `develop`/`main`; the canonical URL is
+  `https://github.com/abdul9016haseeb/Quran-App`. Do not change it or claim a
+  different licence without an owner instruction.
+- The MIT licence covers the app's source code only. Quran text, translation,
+  fonts and any future audio keep their own third-party terms.
+- Tanzil Uthmani Arabic is used under **CC BY 3.0** and must stay attributed in
+  the UI and docs. The QuranEnc `tamil_omar` Tamil translation is used under
+  QuranEnc's terms; do not redistribute it separately from the app.
 - TNTJ Tamil translation is treated as **all rights reserved** until written
   permission exists. Do not scrape, bundle, or "temporarily" include it.
-- Arabic text source, audio rights, and prayer API terms are unresolved. Do not
-  imply otherwise in UI copy, README, or commit messages.
-- Do not invent a repository URL, maintainer identity, pricing, or API limits.
+- Audio rights and prayer API terms are unresolved. Do not imply otherwise in UI
+  copy, README, or commit messages.
+- Do not invent a maintainer identity, pricing, API limits or permission claims.
 
 ### 4.3 Scope
 
 Do not add, without an explicit owner request:
 
-- backend services, databases, auth, cloud sync
-- SQLite/AsyncStorage persistence (preferences are intentionally in memory)
+- backend services, auth, cloud sync
+- databases beyond the bundled read-only `assets/quran.db`, or new persisted
+  state (only the theme preference is stored, in `user_preferences.db`)
 - audio playback, downloads, or reciter audio
 - `expo-location`, `expo-sensors`, notifications, or permissions
 - AI/ML libraries, models, or microphone access
@@ -158,8 +175,13 @@ src/navigation/             typed routes, tabs, theme bridge
 src/theme/tokens.ts         colours, spacing, type scale
 src/components/ui/          reusable primitives (AppText, Card, …)
 src/features/<feature>/     screens and feature components
-src/data/mock/              labelled mock data
+src/data/canonicalSurahs.ts 114-surah canonical metadata
+src/data/quranRepository.ts SQLite reader + offline FTS search
+src/data/mock/              labelled mock data and DB fallback
+src/services/storage/       theme preference storage
 src/types/content.ts        shared domain types
+assets/quran.db             bundled offline Quran dataset (14 MB)
+scripts/                    dataset fetch + database build/validation
 mockup/                     preserved visual references (do not edit)
 docs/architecture/          evaluation, decisions, source material
 docs/development/           workflow, plan, testing, screen spec
@@ -198,12 +220,13 @@ body you propose before running it.
 
 ### 6.2 Repository facts and conventions
 
-- The repository is on `master` with no remote. Feature work happens on
-  `feature/*` branches; do not create a branch unless asked.
+- The repository tracks `origin` (`github.com/abdul9016haseeb/Quran-App`) and is
+  licensed MIT. Work happens on `feature/*` branches; do not create a branch
+  unless asked.
 - `android/` and `ios/` are generated by prebuild and are git-ignored. Never
   hand-edit them; change `app.json` or config plugins instead.
-- Commit messages must be accurate about what works. Do not claim
-  "audio added" when only UI exists, and keep placeholder content labelled.
+- Commit messages must be accurate about what works. Do not claim "audio added"
+  when only UI exists, and keep placeholder content labelled.
 
 ---
 

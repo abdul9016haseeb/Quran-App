@@ -58,12 +58,12 @@ export function SurahIndexScreen() {
         <SearchField
           value={query}
           onChangeText={setQuery}
-          placeholder="அத்தியாயம் அல்லது வசனம் தேடுங்கள்…"
+          placeholder="அத்தியாயம் அல்லது எண் தேடுங்கள்…"
         />
 
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="கடைசியாக ஓதியது: அல்பகரா, வசனம் 255"
+          accessibilityLabel="மாதிரித் தொடர் வாசிப்பு: அல்பகரா, வசனம் 255"
           onPress={() => navigation.navigate('SurahReader', { surahId: 2 })}
           style={({ pressed }) => [
             {
@@ -100,7 +100,7 @@ export function SurahIndexScreen() {
               color={theme.colors.onPrimarySoft}
               style={{ fontSize: 10 }}
             >
-              கடைசியாக ஓதியது
+              தொடர் வாசிப்பு · மாதிரி
             </AppText>
             <AppText
               variant="subheading"

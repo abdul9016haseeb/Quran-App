@@ -75,7 +75,8 @@ export function AboutScreen() {
             தமிழ் வாசிப்பவர்களுக்கான குர்ஆன் செயலி. அரபு உரை, தமிழ்
             மொழிபெயர்ப்பு, வசன வாரியான ஓதுதல், தொழுகை நேரங்கள், கிப்லா மற்றும்
             எதிர்கால ஓதுதல் பயிற்சியை ஒரே அமைதியான இடைமுகத்தில் கொண்டு வருவதே
-            நோக்கம். தற்போது UI அடித்தளம் மட்டுமே கட்டப்பட்டுள்ளது.
+            நோக்கம். தற்போது ஆஃப்லைன் குர்ஆன் வாசிப்பும் தேடலும் செயல்படுகின்றன;
+            ஒலி, தொழுகைக் கணக்கீடு, கிப்லா சென்சார் மற்றும் AI இன்னும் இல்லை.
           </AppText>
         </Card>
 
@@ -100,9 +101,11 @@ export function AboutScreen() {
             positive
           />
           <Divider />
-          <StatusRow label="குர்ஆன் உரை" value="இன்னும் இல்லை" />
+          <StatusRow label="குர்ஆன் உரை (உத்மானி)" value="இணைக்கப்பட்டது" positive />
           <Divider />
-          <StatusRow label="தமிழ் மொழிபெயர்ப்பு" value="உரிமம் தேவை" />
+          <StatusRow label="தமிழ் மொழிபெயர்ப்பு" value="இணைக்கப்பட்டது" positive />
+          <Divider />
+          <StatusRow label="ஆஃப்லைன் வாசிப்பு & தேடல்" value="செயல்படுகிறது" positive />
           <Divider />
           <StatusRow label="ஒலி" value="சரிபார்ப்பு நிலுவையில்" />
           <Divider />
@@ -133,7 +136,7 @@ export function AboutScreen() {
           <InfoRow
             icon="code-slash-outline"
             label="செயலி உரிமம்"
-            value="இன்னும் தேர்ந்தெடுக்கப்படவில்லை"
+            value={LICENCE_STATUS}
           />
           <Divider />
           <InfoRow
@@ -166,9 +169,10 @@ export function AboutScreen() {
               color={theme.colors.goldText}
               style={{ marginTop: 3, fontSize: 10, lineHeight: 16 }}
             >
-              {CONTENT_STATUS_NOTE} Tanzil, Quran Foundation மற்றும் EveryAyah
-              ஆகியவை பரிசீலனையில் உள்ள மூலங்கள் மட்டுமே; தற்போதைய பயன்பாட்டு
-              உரிமைகள் சரிபார்க்கப்படவில்லை. {LICENCE_STATUS}
+              {CONTENT_STATUS_NOTE}. அரபு உரை Tanzil Project-இன் CC BY 3.0
+              உரிமத்தின் கீழ் பயன்படுத்தப்படுகிறது; தமிழாக்கம் QuranEnc
+              விதிமுறைகளுக்கு உட்பட்டது. ஒலி இன்னும் சேர்க்கப்படவில்லை.
+              செயலி மூலக்குறியீடு {LICENCE_STATUS}.
             </AppText>
           </View>
         </Card>

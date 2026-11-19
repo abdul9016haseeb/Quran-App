@@ -84,7 +84,7 @@ export function AppearanceScreen() {
         >
           <View style={styles.rowBetween}>
             <AppText variant="caption" style={{ fontSize: 10 }}>
-              2:1 · மாதிரி உரை
+              எழுத்துரு மாதிரி
             </AppText>
             <Ionicons
               name="bookmark-outline"
@@ -119,8 +119,8 @@ export function AppearanceScreen() {
                 lineHeight: tamilFontSize * 1.7,
               }}
             >
-              இது வாசிப்பு வடிவமைப்பைச் சோதிக்கும் மாதிரி உரை. சரிபார்க்கப்பட்ட
-              மொழிபெயர்ப்பு பின்னர் இணைக்கப்படும்.
+              இது எழுத்துரு அளவைச் சோதிக்கும் மாதிரி உரை. உண்மையான வசனங்கள்
+              வாசிப்புத் திரையில் கிடைக்கின்றன.
             </AppText>
           </View>
         </View>
@@ -213,8 +213,8 @@ export function AppearanceScreen() {
             color={theme.colors.goldText}
             style={{ flex: 1, fontSize: 10, lineHeight: 16 }}
           >
-            இந்தப் பதிப்பில் விருப்பங்கள் அமர்வு நினைவகத்தில் மட்டுமே உள்ளன.
-            AsyncStorage அல்லது SQLite சேமிப்பு அடுத்த கட்டத்தில் இணைக்கப்படும்.
+            தோற்ற முறை சாதனத்தில் சேமிக்கப்படுகிறது; எழுத்துரு அளவு மற்றும்
+            வாசிப்பு முறை அமர்வு நினைவகத்தில் மட்டுமே உள்ளன.
           </AppText>
         </Card>
       </ScrollView>

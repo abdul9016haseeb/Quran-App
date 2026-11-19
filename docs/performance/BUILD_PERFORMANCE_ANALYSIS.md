@@ -6,6 +6,11 @@
 `APJ-Abdul-Kalam-Police-Academy`, and whether `mockup/` is compiled.
 **Status:** Investigation complete. **No configuration was changed.**
 
+> **Note (19 Nov 2026):** the export-size figures below were measured before
+> `assets/quran.db` (14.2 MB) was bundled. Current Android exports are ~18 MB;
+> the DB now dominates the asset total. Build timings and the font sub-path
+> findings are unchanged.
+
 ---
 
 ## 1. Investigation summary

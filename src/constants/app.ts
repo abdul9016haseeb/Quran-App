@@ -5,7 +5,7 @@
 export const APP_NAME_TAMIL = 'அல் குர்ஆன்';
 export const APP_NAME_ARABIC = 'القرآن';
 export const APP_TAGLINE = 'தமிழ் வாசிப்பு';
-export const APP_VERSION = '0.2.0';
+export const APP_VERSION = '0.1.0';
 
 export const SAMPLE_DATA_LABEL = 'மாதிரித் தரவு';
 export const SAMPLE_DATA_LONG =
@@ -21,6 +21,7 @@ export const QURAN_TAMIL_TRANSLATOR = 'ஷேக் உமர் ஷரீஃப
 export const CONTENT_STATUS_NOTE =
   'குர்ஆன் அரபு மூலம்: Tanzil Project (உத்மானி) · தமிழாக்கம்: ஷேக் உமர் ஷரீஃப் (QuranEnc)';
 
-/** Repository & licence status */
-export const REPOSITORY_URL: string | null = null;
+/** Repository & licence status (owner decision, 19 Nov 2026) */
+export const REPOSITORY_URL: string | null =
+  'https://github.com/abdul9016haseeb/Quran-App';
 export const LICENCE_STATUS = 'MIT License';

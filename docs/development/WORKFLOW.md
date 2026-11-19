@@ -260,11 +260,11 @@ small dependency surface.
 | Change | Allowed now? | Rule |
 |---|---|---|
 | Fix a Tamil UI label | Yes | Keep meaning; check rendering |
-| Add factual surah metadata | Only with a cited source | Never from memory; update the count note |
-| Add a real ayah | No | Blocked on P-01/P-02 |
-| Add a Tamil translation | No | Blocked on P-02 |
+| Correct factual surah metadata | Only with a cited source | Never from memory; re-run DB validation |
+| Change Arabic or Tamil text | No | Rebuild `assets/quran.db` via `scripts/`; record source + checksum |
+| Add a different translation | No | Needs an owner decision and documented terms |
 | Add audio URL | No | Blocked on P-03 |
-| Change placeholder copy | Yes | Must remain clearly non-Quranic |
+| Change fallback copy | Yes | Must remain clearly non-Quranic |
 | Remove a sample badge | No | Never |
 
 When verified content arrives, it must include a manifest (edition, version,
@@ -278,8 +278,9 @@ source URL, checksum, licence/attribution) and a validation step.
   amend, merge, rebase, revert, tag, push, reset, stash, clean, or create/delete
   branches unless the owner asked for that specific action. Finish the work,
   report it, and let the owner decide. See `AGENTS.md` §6.1.
-- The repository is on `master` with no remote. Do not rewrite or force-push;
-  do not create the initial commit or any other commit on your own initiative.
+- The repository tracks `origin` (`github.com/abdul9016haseeb/Quran-App`) and is
+  MIT-licensed. Do not rewrite or force-push; do not commit or merge on your own
+  initiative.
 - `android/`, `ios/`, `node_modules/`, `.expo/` are ignored.
 - Use imperative subjects that state reality, for example:
   - `Add prayer monthly table layout`
